@@ -3,10 +3,9 @@ name: day Python Script
 
 on:
   schedule:
-    - cron: '32 22 * * *'  
-    # 每天 6 点执行
-    # - cron: '*/5 * * * *'  
-    # 每5分钟执行一次
+    - cron: '32 1 * * *'  
+    # 相差8个小时---计划每天9点半执行
+  
   workflow_dispatch: # Allow manual triggering of the workflow
 
 jobs:
