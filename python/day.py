@@ -40,6 +40,24 @@ wechat_Header = {
             "sec-fetch-user": "?1",
             "upgrade-insecure-requests": "1",
         }
+
+hellogithub_header = {
+    "accept": "*/*",
+    "accept-language": "zh-CN,zh;q=0.9",
+    "authorization": "Bearer null",
+    "cache-control": "no-cache",
+    "content-type": "application/json",
+    "pragma": "no-cache",
+    "sec-ch-ua": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+    "Referer": "https://hellogithub.com/",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+}
+
 class weChat_listening:
     
     def extract_notice_with_bs4(self,html_content):
@@ -130,9 +148,66 @@ class weChat_listening:
         yesterday = today - datetime.timedelta(days=1)
         return yesterday
 
- 
+
+class hellogithub_rss:
+    def getHelloGithub(self):
+        url = 'https://api.hellogithub.com/v1/periodical/' 
+        responseValue = requests.get(url=url,headers=hellogithub_header)
+        res = responseValue.json()
+        print()
+        if res['success'] == True and responseValue.status_code == 200:
+            currentData = res['volumes'][0]
+            if self.time_diff(currentData['lastmod']) :
+                print('更新')
+                time.sleep(5)
+                notificationTool().main(titleMsg='HelloGitHub 月刊更新', message='https://hellogithub.com/periodical/volume/118')
+        
+    
+    def time_diff(self,dateContent):
+        current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+        if current_date in dateContent:
+            return True
+        else:
+            return False
+        
+
+class dayNote:
+    def main(self):
+        # 获取当前日期
+        today = datetime.datetime.now().date()
+
+        # 定义起始日期
+        start_date = datetime.datetime(2024, 5, 16).date()
+
+        # 计算天数差
+        delta = today - start_date
+        total_days = delta.days
+
+        # 计算年数和月数
+        years = today.year - start_date.year
+        months = today.month - start_date.month
+
+        # 调整负数月份
+        if months < 0:
+            years -= 1
+            months += 12
+
+        # 如果结束日期的天数小于开始日期的天数，则减去一个月
+        if today.day < start_date.day:
+            months -= 1
+            if months < 0:
+                years -= 1
+                months += 12
+
+        print(f"从2024年5月16日到今天({today})")
+        print(f"相差 {total_days} 天")
+        print(f"一共 {years} 年 {months} 个月")
+        content = f"<p><span style=\"font-size: 18px;\">从2024年5月16日到今天<strong>{today}</strong>天</span></p><p><span style=\"color:#ce9178\"><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">尤一已经</span></span><span style=\"color:#ce9178\"><span style=\"font-size: 18px; text-decoration: underline; color: rgb(192, 80, 77);\"><em><strong>{years}.{months}</strong></em></span></span><span style=\"color:#ce9178\"><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">岁了</span></span></p><p><br/></p>"
+
+        notificationTool().main(titleMsg='尤一已经{}.{}岁'.format(years,months), message=content)
 
 def handler():
+    """ 
     d1 = datetime.datetime.now();
     d2 = datetime.datetime(2021, 2, 17);
     d3 = datetime.datetime(2024, 5, 16);
@@ -141,25 +216,13 @@ def handler():
     msg = 'Tips: 认识晓粉已经' + str(d4) + '天'
     msg2 = 'Tips: 孩子已经' + str(d5) + '天'
     print(msg)
-    notificationTool().main(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
+    notificationTool().main(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2) 
+    """
+    dayNote().main()
     weChat_listening().requestURL()
   
 
 if __name__ == '__main__':
-    # handler()
     handler()
-    # print('触发__name__')
-    '''
-    d1 = datetime.datetime.now();
-    d2 = datetime.datetime(2021, 2, 17);
-    d3 = datetime.datetime(2024, 5, 16);
-    d4 = (d1 - d2).days + 1; # 在一起多久
-    d5 = (d1 - d3).days + 1; # 孩子已经多少天
-    msg = 'Tips: 认识晓粉已经' + str(d4) + '天'
-    msg2 = 'Tips: 孩子已经' + str(d5) + '天'
-    print(msg)
-    notification_Model.notificationWeChatToken(notification_Model,titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
-    # notification_Model.notificationWeChatToken(notification_Model,titleMsg='AAA宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
-    weChat_listening().requestURL()
-
-    '''
+    # hellogithub_rss().getHelloGithub()
+    
