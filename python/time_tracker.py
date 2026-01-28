@@ -6,25 +6,8 @@ from github import Github
 import requests
 from notificationTool import notificationTool
 
-   
-def markDown(oldTime,time_diff):
-    # 获取当前日期和时间
-    now = datetime.now()
-    # 提取年月日时分秒
-    year = now.year
-    month = now.month
-    day = now.day
-    hour = now.hour
-    minute = now.minute
-    second = now.second
-    timeINvalue = 'push refresh: {}-{}-{} {}:{}:{}'.format(year,month,day,hour,minute,second)
-    # print(timeINvalue)
-    notificationTool().main(titleMsg='demo定时刷新', message='now:{}<br/>oldtime:{}<br/>time_diff:{}'.format(timeINvalue, oldTime,time_diff))
-
-
 # 计算时间差值
 class TimeTracker:
-
   def save_current_time(self,repo, file_path):
       """保存当前时间到目标仓库"""
       current_time = datetime.now(timezone.utc).isoformat()

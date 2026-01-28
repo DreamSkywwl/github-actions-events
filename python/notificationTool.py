@@ -8,7 +8,6 @@ import os
 
 class notificationTool:
     def main(self,titleMsg, message):
-        # TODO: 测试
         showdocPin = os.environ.get('SHOWDOC_PIN')
         showdocToken = os.environ.get('SHOWDOC_TOKEN')
         letserverToken = os.environ.get('LETSERVER_TOKEN')

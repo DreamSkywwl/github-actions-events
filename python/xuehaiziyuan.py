@@ -3,51 +3,14 @@ from lxml import html
 import requests
 import os
 import time
+from notificationTool import notificationTool 
 
 initializeData = ''
 defaultTotalPages = 12
 defaultIndex = 1
 defaultFile = r'D:\Code\dreamskyNote\abdc.txt'
 
-class notification_Model:
-   
-    def notificationWeChatToken(self,titleMsg, message):
-        url = "https://push.showdoc.com.cn/server/api/push/303b94dcc4ac08927ccbce0e72ad9fec430211407"
-        
-        payload = {
-            "title": titleMsg,
-            "content": message,
-            "user_token": "12307831fb70e549bb4d5af466858b64839451758"
-        }
-        headers = {
-            "accept": "application/json, text/plain, */*",
-            "accept-language": "zh-CN,zh;q=0.9",
-            "content-type": "application/x-www-form-urlencoded",
-            "priority": "u=1, i",
-            "sec-ch-ua": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "\"Windows\"",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "same-origin"
-        }
 
-        response = requests.post(url, headers=headers, data=payload)
-        notification_Model().notificationWeChatToken2(titleMsg)
-        print(response.text)
-    
-    def notificationWeChatToken2(self,titleMsg, ):
-        
-        url = "https://api.letserver.run/message/info?token=cq0mkh8jn87bju92b0ag&msg=" + titleMsg
-        headers = {
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-
-        response = requests.get(url, headers=headers)
-
-        print(response.text)
-
- 
 
 # 在获取列表的时候先判断一下是否还有
 def checkFileContent(content):
@@ -217,7 +180,7 @@ if len(initializeData) >=1:
       arrContent.append('<br />'.join(arrNext))
       arrContent.append('=====分割线=====')
    contentMessage = '<br />'.join(arrContent)
-   notification_Model.notificationWeChatToken(notification_Model, '网盘资源更新',contentMessage)
+   notificationTool().main('网盘资源更新',contentMessage)
  
 
 
