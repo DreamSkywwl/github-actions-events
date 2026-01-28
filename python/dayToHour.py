@@ -103,7 +103,8 @@ class juejin:
         old_time = datetime.fromtimestamp(float(timeString), py)
         now_time = datetime.now(py)
         totleTime = (now_time - old_time)
-        print("timeString:{}--old_time:{}--total_seconds:{}".format(timeString,old_time,totleTime.total_seconds()))
+        print("timeString:{}--old_time:{}--total_seconds:{}--timeMaxLine:{}".format(timeString,old_time,totleTime.total_seconds(),timeMaxLine))
+        
         if totleTime.total_seconds() <= timeMaxLine:
             return True
         else:
@@ -113,7 +114,7 @@ class juejin:
 class result_model:
     def total_func():
         arrOne = []
-        arrOne = fuliba().netWork()
+        # arrOne = fuliba().netWork()
         arr_uuids = ['1574156384091320', '3483683111318823', '2946346894759319', '53218623894222','1139531179102392','1063982986187486','3298190611978526']
         
         arrSecond = []
@@ -134,9 +135,12 @@ class result_model:
             notificationTool().main(title, content)
                       
 def main_handler():
+  global timeMaxLine
   timeMaxLine = TimeTracker().main(filename='dayToHour_actions')
   if not timeMaxLine:
       timeMaxLine = 3600
+  
+  print('timeMaxLine---------{}'.format(timeMaxLine))
   result_model.total_func()
     
     

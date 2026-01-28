@@ -80,14 +80,14 @@ class TimeTracker:
       target_g = Github(target_token)
       
       # 获取源仓库信息
-      source_repo_name = os.environ.get('GITHUB_REPOSITORY')
+      # source_repo_name = os.environ.get('GITHUB_REPOSITORY')
       # source_repo = source_g.get_repo(source_repo_name)
       
       # 获取目标仓库对象
       target_repo = target_g.get_repo(target_repo_name)
       
       # 定义时间戳文件路径
-      timestamp_file = filename + '.txt'#"action_execution_time.txt"
+      timestamp_file = filename + '.txt'
       
       # 加载上次执行时间
       last_time = self.load_last_time(target_repo, timestamp_file)
