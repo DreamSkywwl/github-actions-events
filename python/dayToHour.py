@@ -114,7 +114,7 @@ class juejin:
 class result_model:
     def total_func():
         arrOne = []
-        # arrOne = fuliba().netWork()
+        arrOne = fuliba().netWork()
         arr_uuids = ['1574156384091320', '3483683111318823', '2946346894759319', '53218623894222','1139531179102392','1063982986187486','3298190611978526']
         
         arrSecond = []
