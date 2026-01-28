@@ -10,7 +10,8 @@ from notificationTool import notificationTool
 class TimeTracker:
   def save_current_time(self,repo, file_path):
       """保存当前时间到目标仓库"""
-      current_time = datetime.now(timezone.utc).isoformat()
+      current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+      #datetime.now().isoformat()
       
       try:
           contents = repo.get_contents(file_path)
@@ -21,7 +22,7 @@ class TimeTracker:
               sha=contents.sha
           )
           # markDown(current_time, )
-          print(f"Successfully updated timestamp file: {current_time}")
+          # print(f"Successfully updated timestamp file: {current_time}")
           return current_time
       except Exception:
           repo.create_file(
