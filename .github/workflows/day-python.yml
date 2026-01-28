@@ -7,7 +7,7 @@ on:
     # 每天 6 点执行
     # - cron: '*/5 * * * *'  
     # 每5分钟执行一次
-  # workflow_dispatch: # Allow manual triggering of the workflow
+  workflow_dispatch: # Allow manual triggering of the workflow
 
 jobs:
   run-python:
@@ -41,4 +41,3 @@ jobs:
               SHOWDOC_PIN: ${{ secrets.SHOWDOC_PIN }}
               LETSERVER_TOKEN: ${{ secrets.LETSERVER_TOKEN }}
         run: python ./python/day.py
-# python ./validation-dashboard/json2htmlrunner.py

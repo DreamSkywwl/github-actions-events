@@ -6,6 +6,7 @@ on:
     - cron: '*/51 * * * *' 
     # - cron: '*/10 * * * *'  
     # - cron: '0 * * * *'  # 每小时执行一次
+  workflow_dispatch: # Allow manual triggering of the workflow
 
 jobs:
   run-python:
