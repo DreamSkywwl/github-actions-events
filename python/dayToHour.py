@@ -134,7 +134,7 @@ class result_model:
             notificationTool().main(title, content)
                       
 def main_handler():
-  timeMaxLine = TimeTracker.main(filename='dayToHour_actions')
+  timeMaxLine = TimeTracker().main(filename='dayToHour_actions')
   if not timeMaxLine:
       timeMaxLine = 3600
   result_model.total_func()
