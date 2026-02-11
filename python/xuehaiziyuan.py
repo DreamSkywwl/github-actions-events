@@ -130,7 +130,8 @@ class xuehaiziyuan:
       for idx, product in enumerate(products, 1):
           title_elements = product.xpath('.//h3[@class="tzt-media-box_title"]/text()')
           title = title_elements[0].strip() if title_elements else "未找到标题"
-          if title in defaultContent and title not in '未找到标题':
+          # if title in defaultContent and title not in '未找到标题':
+          if self.getContent(title) and title not in '未找到标题':
              self.log(f"title====:{title}")
              break
           link = product.get('href', "未找到链接")
@@ -209,9 +210,9 @@ class xuehaiziyuan:
       return content
 
     def log(self, content, index = 1):
-       if defaultTotalPages and index == 1:
+       if defaultTest and index == 1:
           print(f"run====={content}=====")
-       elif defaultTotalPages and index != 1:
+       elif defaultTest and index != 1:
           print(f"====:{content}")
         
 
