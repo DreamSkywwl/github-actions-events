@@ -29,6 +29,10 @@ class xuehaiziyuan:
         global defaultTotalPages
         defaultTotalPages = 12
         
+        
+        print(f"xuehaiziyuan defaultFile====:{defaultFile}")
+        global defaultFile
+        defaultFile = 'xuehaiziyuan.txt'
         global defaultNetContent
         defaultNetContent = FileTracker.getContent(defaultFile)
         self.test_xuehaiziyuan()
