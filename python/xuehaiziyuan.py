@@ -218,4 +218,4 @@ class xuehaiziyuan:
 
 
 
-# xuehaiziyuan().run('')
+xuehaiziyuan().run()
