@@ -57,7 +57,7 @@ class xuehaiziyuan:
             if item not in defaultNetContent:
                 defaultNetContent = f"{defaultNetContent}\n{item}"
           
-          # self.writeContent(arrContent)
+          self.writeContent(arrContent)
           FileTracker().saveContent(defaultFile, defaultNetContent)
 
 
