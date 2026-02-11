@@ -14,7 +14,8 @@ class FileTracker:
   
   def saveContent(self, fileName,message):
       current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-      repo = self.initDataBase(fileName)
+      repo = self.initDataBase()
+      print(f"saveContent fileName====:{fileName} current_time====:{current_time}")
       try:
           contents = repo.get_contents(fileName)
           repo.update_file(
@@ -36,7 +37,8 @@ class FileTracker:
       # if None in fileName or len(fileName) == 0:
       #     print(f"getContent fileName None")
       current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-      print(f"getContent fileName====:{fileName}")
+      print(f"getContent fileName====:{fileName} current_time====:{current_time}")
+      
       repo = self.initDataBase()
       try:
           contents = repo.get_contents(fileName)

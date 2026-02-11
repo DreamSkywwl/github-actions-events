@@ -25,7 +25,7 @@ defaultFile = 'xuehaiziyuan.txt'
 
 class xuehaiziyuan:
       
-    # 初始化----》
+    # 初始化---->
     def run(self):
         global defaultContent
         defaultContent = '' #
