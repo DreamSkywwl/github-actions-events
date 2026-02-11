@@ -54,6 +54,6 @@ class notificationTool:
         response = requests.get(url, headers=headers)
 
         if response.status_code != 200:
-          print('notificationWe_letserver error:{}'.format(response.text))
+          print(f'notificationWe_letserver error:{response.text}')
 
  

@@ -68,6 +68,8 @@ class xuehaiziyuan:
         return contentFile not in defaultNetContent
     #  写入内容
     def writeContent(self, content):
+        if len(content) == 0:
+           return
         self.log(f'aaa:{content}')
         arr = []
         for item in content:
