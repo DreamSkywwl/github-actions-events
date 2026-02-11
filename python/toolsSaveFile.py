@@ -4,7 +4,8 @@ import os
 
 from datetime import datetime, timezone
 
-import Github
+
+from github import Github
 
 
 # 计算时间差值
