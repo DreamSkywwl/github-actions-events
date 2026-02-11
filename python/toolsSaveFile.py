@@ -32,8 +32,11 @@ class FileTracker:
 
 
   def getContent(self, fileName):
+      if None in fileName or len(fileName) == 0:
+          print(f"getContent fileName None")
       current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-      repo = self.initDataBase(fileName)
+      print(f"getContent fileName====:{fileName}")
+      repo = self.initDataBase()
       try:
           contents = repo.get_contents(fileName)
           str = contents.decoded_content.decode('utf-8')
@@ -43,7 +46,7 @@ class FileTracker:
           return ''
   
   # 初始化环境变量
-  def initDataBase(self, fileName):
+  def initDataBase(self):
       # 获取环境变量
       source_token = os.environ.get('GITHUB_TOKEN')
       target_repo_name = os.environ.get('TARGET_REPO')
