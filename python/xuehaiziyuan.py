@@ -31,8 +31,8 @@ class xuehaiziyuan:
         
         
         print(f"xuehaiziyuan defaultFile====:{defaultFile}")
-        global defaultFile
-        defaultFile = 'xuehaiziyuan.txt'
+        # global defaultFile
+        # defaultFile = 'xuehaiziyuan.txt'
         global defaultNetContent
         defaultNetContent = FileTracker.getContent(defaultFile)
         self.test_xuehaiziyuan()
