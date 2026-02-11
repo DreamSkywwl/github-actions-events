@@ -7,6 +7,9 @@ from notificationTool import notificationTool
 from toolsSaveFile import FileTracker
 
 
+# https://github.com/DreamSkywwl/github-actions-events/actions/workflows/sharePan-python.yml
+
+
 # -------------------常量------------------------
 defaultContent = '' # 初始数据
 defaultNetContent = '' # 初始数据
@@ -34,7 +37,7 @@ class xuehaiziyuan:
         # global defaultFile
         # defaultFile = 'xuehaiziyuan.txt'
         global defaultNetContent
-        defaultNetContent = FileTracker.getContent(defaultFile)
+        defaultNetContent = FileTracker().getContent(defaultFile)
         self.test_xuehaiziyuan()
         self.log(f'一共{defaultTotalPages}页')
 
@@ -55,7 +58,7 @@ class xuehaiziyuan:
                 defaultNetContent = f"{defaultNetContent}\n{item}"
           
           # self.writeContent(arrContent)
-          FileTracker.saveContent(defaultFile, defaultNetContent)
+          FileTracker().saveContent(defaultFile, defaultNetContent)
 
 
         
@@ -75,7 +78,7 @@ class xuehaiziyuan:
         
         str = '\n'.join(arr)
         
-        notificationTool.main(titleMsg='网盘分享内容更新', message=str)
+        notificationTool().main(titleMsg='网盘分享内容更新', message=str)
 
 
         
