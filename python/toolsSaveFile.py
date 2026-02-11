@@ -4,7 +4,7 @@ import os
 
 from datetime import datetime, timezone
 
-from github import Github
+import Github
 
 
 # 计算时间差值
@@ -32,8 +32,8 @@ class FileTracker:
 
 
   def getContent(self, fileName):
-      if None in fileName or len(fileName) == 0:
-          print(f"getContent fileName None")
+      # if None in fileName or len(fileName) == 0:
+      #     print(f"getContent fileName None")
       current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
       print(f"getContent fileName====:{fileName}")
       repo = self.initDataBase()
