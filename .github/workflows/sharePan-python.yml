@@ -1,0 +1,42 @@
+
+name: sharePan Python Script
+
+on:
+  schedule:
+    - cron: '32 9 * * *'  
+    # 相差8个小时---计划每天下午五点半执行
+  
+  workflow_dispatch: # Allow manual triggering of the workflow
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Set Beijing Timezone
+        uses: szenius/set-timezone@v1.0
+        with:
+          timezoneLinux: "Asia/Shanghai"
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./python/requirements.txt
+
+      - name: ============>Run Python script
+        env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              TARGET_REPO: ${{ secrets.TARGET_REPO }}
+              TARGET_TOKEN: ${{ secrets.TARGET_TOKEN }}
+              SHOWDOC_TOKEN: ${{ secrets.SHOWDOC_TOKEN }}
+              SHOWDOC_PIN: ${{ secrets.SHOWDOC_PIN }}
+              LETSERVER_TOKEN: ${{ secrets.LETSERVER_TOKEN }}
+        run: python ./python/xuehaiziyuan.py
