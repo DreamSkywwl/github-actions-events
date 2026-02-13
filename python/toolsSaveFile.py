@@ -43,6 +43,7 @@ class FileTracker:
       try:
           contents = repo.get_contents(fileName)
           str = contents.decoded_content.decode('utf-8')
+          
           return str
       except Exception:
           print(f"file:{fileName} No Found. timestamp:{current_time}")
