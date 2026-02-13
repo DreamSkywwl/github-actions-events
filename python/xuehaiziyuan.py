@@ -62,7 +62,7 @@ class xuehaiziyuan:
 
     #  获取数据内容
     def getContent(self, contentFile):
-        return contentFile not in defaultNetContent
+        return contentFile in defaultNetContent
     #  写入内容
     def writeContent(self, content):
         # self.log(f'aaa:{content}')
@@ -139,9 +139,10 @@ class xuehaiziyuan:
           title_elements = product.xpath('.//h3[@class="tzt-media-box_title"]/text()')
           title = title_elements[0].strip() if title_elements else "未找到标题"
           # if title in defaultContent and title not in '未找到标题':
-          if self.getContent(title) and title not in '未找到标题':
+          if self.getContent(title) and title in '未找到标题' and title not in '新人首次进入本资源站必看':
              self.log(f"title====:{title}")
              break
+          # 
           link = product.get('href', "未找到链接")
           timeArr = product.xpath('.//div[@class="tzt-media-box_time"]/text()')
 
