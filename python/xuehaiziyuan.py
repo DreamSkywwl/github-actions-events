@@ -21,4 +21,4 @@ defaultTest = False
 
 defaultFile = 'xuehaiziyuan.txt'
 FileTracker().saveContent(fileName=defaultFile,message="aaaaaaaaaaa")
-print(FileTracker.getContent(fileName=defaultFile))
+print(FileTracker().getContent(fileName=defaultFile))
