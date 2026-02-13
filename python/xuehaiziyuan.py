@@ -68,17 +68,21 @@ class xuehaiziyuan:
         return contentFile not in defaultNetContent
     #  写入内容
     def writeContent(self, content):
+        # self.log(f'aaa:{content}')
+        print(f"writeContent content====:{content}")
         if len(content) == 0:
            return
-        self.log(f'aaa:{content}')
         arr = []
+
         for item in content:
            arrStr = item.split(',')
            if len(arrStr) >= 2:
               arr.append(f"标题：{arrStr[0]} \n网盘地址：{arrStr[len(arrStr) - 1]}\n=========我是分割线=========\n")
 
         
+        print(f"writeContent arr====:{arr}")
         str = '\n'.join(arr)
+        print(f"writeContent str====:{str}")
         
         notificationTool().main(titleMsg='网盘分享内容更新', message=str)
 

@@ -42,8 +42,8 @@ class notificationTool:
         }
 
         response = requests.post(url, headers=headers, data=payload)
-        if response.status_code != 200:
-          print('notificationWe_showdoc error:{}'.format(response.text))
+        print(f'notificationWe_showdoc error:{response.text}')
+          
     
     def notificationWe_letserver(self,letserverToken,titleMsg):
         url = "https://api.letserver.run/message/info?token=" + letserverToken + '&msg=' + titleMsg
@@ -53,7 +53,7 @@ class notificationTool:
 
         response = requests.get(url, headers=headers)
 
-        if response.status_code != 200:
-          print(f'notificationWe_letserver error:{response.text}')
+        print(f'notificationWe_letserver error:{response.text}')
+          
 
  
