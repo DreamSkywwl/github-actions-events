@@ -41,15 +41,11 @@ class FileTracker:
       repo = self.initDataBase()
       try:
           contents = repo.get_contents(fileName)
-          print(f"FileTracker---getContent---file:{fileName} value:{contents}. timestamp:{current_time}  contents.decoded_content:{contents.decoded_content}.")
           str = contents.decoded_content.decode('utf-8')
-          print(f"FileTracker---getContent---file1:{fileName} value:{str}. timestamp:{current_time}")
-          if str in None or len(str) == 0:
-              str = ''
-          print(f"FileTracker---getContent---file2:{fileName} value:{str}. timestamp:{current_time}")
+          print(f"FileTracker getContent fileName====:{fileName} current_time====:{current_time} str===={str}")
           return str
       except Exception as e:
-          print(f"FileTracker---getContent---file:{fileName} No Found. timestamp:{current_time} error:{e}")
+          print(f"FileTracker getContent file:{fileName} No Found. timestamp:{current_time} error:{e}")
           return ''
   
   # 初始化环境变量
