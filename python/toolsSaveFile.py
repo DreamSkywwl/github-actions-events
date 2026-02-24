@@ -31,7 +31,7 @@ class FileTracker:
               message=f"Update {fileName} timestamp: {current_time}",
               content=current_time
           )
-          print(f"FileTracker saveContent Successfully created file: {fileName},  timestamp: {current_time}")
+          print(f"FileTracker saveContent Successfully created file: {fileName},  timestamp: {current_time} error:{e}")
 
 
   def getContent(self, fileName):
@@ -41,13 +41,14 @@ class FileTracker:
       repo = self.initDataBase()
       try:
           contents = repo.get_contents(fileName)
+          print(f"FileTracker---getContent---file:{fileName} value:{contents}. timestamp:{current_time}")
           str = contents.decoded_content.decode('utf-8')
           if str in None or len(str) == 0:
               str = ''
           print(f"FileTracker---getContent---file:{fileName} value:{str}. timestamp:{current_time}")
           return str
-      except Exception:
-          print(f"FileTracker---getContent---file:{fileName} No Found. timestamp:{current_time}")
+      except Exception as e:
+          print(f"FileTracker---getContent---file:{fileName} No Found. timestamp:{current_time} error:{e}")
           return ''
   
   # 初始化环境变量
