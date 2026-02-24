@@ -42,25 +42,6 @@ class xuehaiziyuan:
         self.log(f'一共{defaultTotalPages}页')
 
         
-        for index in range(defaultTotalPages):
-            time.sleep(10)
-            self.getMainHtml(index + 1)
-
-        arrContent = defaultContent.split(' |a|a| ')
-        printContent = ''
-        if len(arrContent) == 0:
-           print('arrContent======数据为空')
-        else:
-          self.log(arrContent)
-          for item in arrContent:
-            if item not in defaultNetContent:
-                defaultNetContent = f"{defaultNetContent}\n{item}"
-                printContent = f"{printContent}\n{item}"
-          
-          self.writeContent(printContent)
-          print(f"save to last defaultNetContent====:{defaultNetContent}")
-          FileTracker().saveContent(defaultFile, defaultNetContent)
-
 
         
 
