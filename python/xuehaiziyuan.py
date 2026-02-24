@@ -37,6 +37,7 @@ class xuehaiziyuan:
         
         global defaultNetContent
         defaultNetContent = FileTracker().getContent(defaultFile)
+        self.log(f"defaultNetContent====: {defaultNetContent}")
         self.test_xuehaiziyuan()
         self.log(f'一共{defaultTotalPages}页')
 
@@ -46,6 +47,7 @@ class xuehaiziyuan:
             self.getMainHtml(index + 1)
 
         arrContent = defaultContent.split(' |a|a| ')
+        printContent = ''
         if len(arrContent) == 0:
            print('arrContent======数据为空')
         else:
@@ -53,20 +55,22 @@ class xuehaiziyuan:
           for item in arrContent:
             if item not in defaultNetContent:
                 defaultNetContent = f"{defaultNetContent}\n{item}"
+                printContent = f"{printContent}\n{item}"
           
-          self.writeContent(arrContent)
+          self.writeContent(printContent)
+          print(f"save to last defaultNetContent====:{defaultNetContent}")
           FileTracker().saveContent(defaultFile, defaultNetContent)
 
 
         
 
     #  获取数据内容
-    def getContent(self, contentFile):
-        return contentFile in defaultNetContent
+    def getContent(self, content):
+        return content in defaultNetContent
     #  写入内容
     def writeContent(self, content):
         # self.log(f'aaa:{content}')
-        print(f"writeContent content====:{content}")
+        print(f"writeContent content====:{len(content)}")
         if len(content) == 0:
            return
         arr = []
@@ -77,7 +81,7 @@ class xuehaiziyuan:
               arr.append(f"标题：{arrStr[0]} \n网盘地址：{arrStr[len(arrStr) - 1]}\n=========我是分割线=========\n")
 
         
-        print(f"writeContent arr====:{arr}")
+        print(f"writeContent arr====:{len(arr)}")
         str = '\n'.join(arr)
         print(f"writeContent str====:{str}")
         
@@ -139,10 +143,9 @@ class xuehaiziyuan:
           title_elements = product.xpath('.//h3[@class="tzt-media-box_title"]/text()')
           title = title_elements[0].strip() if title_elements else "未找到标题"
           # if title in defaultContent and title not in '未找到标题':
-          if self.getContent(title) and title in '未找到标题' and title not in '新人首次进入本资源站必看':
-             self.log(f"title====:{title}")
+          if self.getContent(title) or title in '未找到标题' :
+             self.log(f"忽略 title====:{title}")
              break
-          # 
           link = product.get('href', "未找到链接")
           timeArr = product.xpath('.//div[@class="tzt-media-box_time"]/text()')
 
@@ -152,7 +155,7 @@ class xuehaiziyuan:
             productTag = timeArr[0]
             productTime = timeArr[1]
           lastContent = ','.join([title,link, productTag,productTime])
-          if self.getContent(lastContent):
+          if not self.getContent(lastContent):
             self.getHtmlNext(link, lastContent)
             self.log('sleep 3s')
             time.sleep(3)

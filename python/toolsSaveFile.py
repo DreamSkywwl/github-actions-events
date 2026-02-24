@@ -15,38 +15,39 @@ class FileTracker:
   def saveContent(self, fileName,message):
       current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
       repo = self.initDataBase()
-      print(f"saveContent fileName====:{fileName} current_time====:{current_time}")
+      print(f"FileTracker saveContent fileName====:{fileName} current_time====:{current_time} message====:{message}")
       try:
           contents = repo.get_contents(fileName)
-          repo.update_file(
-              path=fileName,
+          response = repo.update_file(
+              path=contents.path,
               message=f"Update {fileName} timestamp: {current_time}",
               content=message,
               sha=contents.sha
           )
+          print(f"FileTracker saveContent response ====:{response}")
       except Exception:
           repo.create_file(
               path=fileName,
               message=f"Update {fileName} timestamp: {current_time}",
               content=current_time
           )
-          print(f"Successfully created file: {fileName},  timestamp: {current_time}")
+          print(f"FileTracker saveContent Successfully created file: {fileName},  timestamp: {current_time}")
 
 
   def getContent(self, fileName):
-      # if None in fileName or len(fileName) == 0:
-      #     print(f"getContent fileName None")
       current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-      print(f"getContent fileName====:{fileName} current_time====:{current_time}")
+      print(f"FileTracker getContent fileName====:{fileName} current_time====:{current_time}")
       
       repo = self.initDataBase()
       try:
           contents = repo.get_contents(fileName)
           str = contents.decoded_content.decode('utf-8')
-          
+          if str in None or len(str) == 0:
+              str = ''
+          print(f"FileTracker---getContent---file:{fileName} value:{str}. timestamp:{current_time}")
           return str
       except Exception:
-          print(f"file:{fileName} No Found. timestamp:{current_time}")
+          print(f"FileTracker---getContent---file:{fileName} No Found. timestamp:{current_time}")
           return ''
   
   # 初始化环境变量
