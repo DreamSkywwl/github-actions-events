@@ -202,7 +202,7 @@ class dayNote:
         print(f"从2024年5月16日到今天({today})")
         print(f"相差 {total_days} 天")
         print(f"一共 {years} 年 {months} 个月")
-        content = f"<p><span style=\"font-size: 18px;\">从2024年5月16日到今天<strong>{today}</strong>天</span></p><p><span style=\"color:#ce9178\"><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">尤一已经</span></span><span style=\"color:#ce9178\"><span style=\"font-size: 18px; text-decoration: underline; color: rgb(192, 80, 77);\"><em><strong>{years}.{months}</strong></em></span></span><span style=\"color:#ce9178\"><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">岁了</span></span></p><p><br/></p>"
+        content = f"<p><span style=\"font-size: 18px;\">从2024年5月16日到今天<strong>{today}</strong>天</span></p><p><span style=\"color:#fff\"><span style=\"color: rgb(255,0,0); font-size: 18px;\">尤一已经</span></span><span style=\"color:#fff\"><span style=\"font-size: 18px; text-decoration: underline; color: rgb(255,0,0);\"><em><strong>{years}.{months}</strong></em></span></span><span style=\"color:#fff\"><span style=\"color: #fff; font-size: 18px;\">岁了</span></span></p><p><br/></p>"
 
         notificationTool().main(titleMsg='尤一已经{}.{}岁'.format(years,months), message=content)
 
