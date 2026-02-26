@@ -18,6 +18,7 @@ defaultIndex = 1  # 页码初始化值
 
 defaultTest = False
 
+defaultRepeatCount = 0
 
 
 
@@ -27,10 +28,17 @@ class xuehaiziyuan:
       
     # 初始化---->
     def run(self):
+        # 初始化全局变量
         global defaultContent
         defaultContent = '' #
         global defaultTotalPages
         defaultTotalPages = 12
+
+        global defaultRepeatCount
+        defaultRepeatCount = 0
+
+
+
         defaultFile = 'xuehaiziyuan.txt'
         
         print(f"defaultFile====:{defaultFile}")
@@ -42,6 +50,8 @@ class xuehaiziyuan:
         self.log(f'一共{defaultTotalPages}页')
 
         for index in range(defaultTotalPages):
+            if defaultRepeatCount >= 3:
+               break
             time.sleep(10)
             self.getMainHtml(index + 1)
 
@@ -137,6 +147,7 @@ class xuehaiziyuan:
           title = title_elements[0].strip() if title_elements else "未找到标题"
           # if title in defaultContent and title not in '未找到标题':
           if self.getContent(title) or title in '未找到标题' :
+            defaultRepeatCount += 1
             self.log(f"忽略 title====:{title}")
           else:
             link = product.get('href', "未找到链接")
