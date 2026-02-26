@@ -147,6 +147,7 @@ class xuehaiziyuan:
           title = title_elements[0].strip() if title_elements else "未找到标题"
           # if title in defaultContent and title not in '未找到标题':
           if self.getContent(title) or title in '未找到标题' :
+            global defaultRepeatCount
             defaultRepeatCount += 1
             self.log(f"忽略 title====:{title}")
           else:
