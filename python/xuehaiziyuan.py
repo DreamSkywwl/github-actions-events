@@ -98,7 +98,7 @@ class xuehaiziyuan:
       if defaultTest:
          content = self.testHtml()
       else:
-        url = 'http://www.xuehaiziyuan.com/?page=1'
+        url = 'http://www.youkeziyuan.com/?page=1'
         headers = {
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "accept-language": "zh-CN,zh;q=0.9",
@@ -106,7 +106,7 @@ class xuehaiziyuan:
             "pragma": "no-cache",
             "upgrade-insecure-requests": "1",
             "cookie": "__51cke__=; timezone=8; __tins__21995819=%7B%22sid%22%3A%201768876943491%2C%20%22vd%22%3A%2039%2C%20%22expires%22%3A%201768880497282%7D; __51laig__=39",
-            "Referer": "http://www.xuehaiziyuan.com/page_11.html",
+            "Referer": "http://www.youkeziyuan.com/page_11.html",
             "Referrer-Policy": "strict-origin-when-cross-origin"
         }
         html_content = requests.get(headers=headers,url=url)
@@ -120,9 +120,9 @@ class xuehaiziyuan:
          self.log(f'getMainHtml测试')
          content = self.testHtml()
       else:
-        url = f'http://www.xuehaiziyuan.com/page_{index}.html'
+        url = f'http://www.youkeziyuan.com/page_{index}/'
         if index == 1:
-          url = 'http://www.xuehaiziyuan.com/?page=1'
+          url = 'http://www.youkeziyuan.com/?page=1'
         headers = {
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "accept-language": "zh-CN,zh;q=0.9",
@@ -130,7 +130,7 @@ class xuehaiziyuan:
             "pragma": "no-cache",
             "upgrade-insecure-requests": "1",
             "cookie": "__51cke__=; timezone=8; __tins__21995819=%7B%22sid%22%3A%201768876943491%2C%20%22vd%22%3A%2039%2C%20%22expires%22%3A%201768880497282%7D; __51laig__=39",
-            "Referer": "http://www.xuehaiziyuan.com/page_11.html",
+            "Referer": "http://www.youkeziyuan.com/page_11.html",
             "Referrer-Policy": "strict-origin-when-cross-origin"
         }
         html_content = requests.get(headers=headers,url=url)
@@ -186,7 +186,7 @@ class xuehaiziyuan:
           "pragma": "no-cache",
           "upgrade-insecure-requests": "1",
           "cookie": "__51cke__=; timezone=8; __tins__21995819=%7B%22sid%22%3A%201768876943491%2C%20%22vd%22%3A%2039%2C%20%22expires%22%3A%201768880497282%7D; __51laig__=39",
-          "Referer": "http://www.xuehaiziyuan.com/page_11.html",
+          "Referer": "http://www.youkeziyuan.com/page_11.html",
           "Referrer-Policy": "strict-origin-when-cross-origin"
       }
       html_content = requests.get(headers=headers,url=url)
