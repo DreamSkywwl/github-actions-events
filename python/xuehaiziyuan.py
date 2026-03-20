@@ -88,7 +88,7 @@ class xuehaiziyuan:
         str = '\n'.join(arr)
         print(f"writeContent str====:{str}")
         
-        notificationTool().main(titleMsg='网盘分享内容更新', message=str)
+        # notificationTool().main(titleMsg='网盘分享内容更新', message=str)
 
 
       
