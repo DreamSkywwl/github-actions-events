@@ -212,8 +212,8 @@ class xuehaiziyuan:
         status = len(linkKeyWord) >= 1 and 'https://pan.quark.cn' in linkKeyWord[0].strip()
         
         if status == True:
-          self.log(f"详情页网盘链接地址：{link[0]}")
-          newMessage = ','.join([saveMessage, link[0]])
+          self.log(f"详情页网盘链接地址：{linkKeyWord[0]}")
+          newMessage = ','.join([saveMessage, linkKeyWord[0]])
           global defaultContent
           defaultContent = f"{defaultContent} |a|a| {newMessage}"
           break
