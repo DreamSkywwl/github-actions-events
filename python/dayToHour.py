@@ -19,7 +19,7 @@ timeMaxLine = 3600
 
 class fuliba:  
     def netWork(self):
-        url = 'https://fuliba2023.net/feed'
+        url = 'https://fuliba.net/feed'
         feed = feedparser.parse(url)
         arrContent = []
         for entry in feed['entries']:
