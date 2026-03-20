@@ -32,7 +32,7 @@ class xuehaiziyuan:
         global defaultContent
         defaultContent = '' #
         global defaultTotalPages
-        defaultTotalPages = 12
+        defaultTotalPages = 3
 
         global defaultRepeatCount
         defaultRepeatCount = 0
@@ -174,8 +174,9 @@ class xuehaiziyuan:
       endLists = lists[len(lists) - 1].xpath('./a/text()')
       if len(endLists) >= 1:
         endPage = endLists[0].strip().replace('共','').replace('页','')
-        global defaultTotalPages
-        defaultTotalPages = int(endPage)
+        # TODO: 测试数据
+        # global defaultTotalPages
+        # defaultTotalPages = int(endPage)
 
 
     # 获取网页内容
@@ -199,18 +200,17 @@ class xuehaiziyuan:
 
 
     def nextPageDetail(self,content, saveMessage):
-      self.log("XPath解析:nextPageDetail")
+      self.log(f"XPath解析:nextPageDetail:{content}")
       tree = html.fromstring(content)
       lists = tree.xpath('.//div[@id="viewer"]/p')
       for idx, listItem in enumerate(lists, 1):
         linkKeyWord = listItem.xpath('.//span/text()')
         link = listItem.xpath('.//a/text()')
-        
+        self.log(f"详情页   linkKeyWord：{linkKeyWord}--------link{link}")
         status = len(linkKeyWord) >= 1 and len(link) >= 1 and 'https://' in link[0].strip() and '链接' in linkKeyWord[0].strip()
         
         if status == True:
-          
-          self.log(f"网盘链接地址：{link[0]}")
+          self.log(f"详情页网盘链接地址：{link[0]}")
           newMessage = ','.join([saveMessage, link[0]])
           global defaultContent
           defaultContent = f"{defaultContent} |a|a| {newMessage}"
