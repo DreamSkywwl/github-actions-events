@@ -88,7 +88,7 @@ class xuehaiziyuan:
         str = '\n'.join(arr)
         print(f"writeContent str====:{str}")
         
-        notificationTool().main(titleMsg='网盘分享内容更新', message=str)
+        # notificationTool().main(titleMsg='网盘分享内容更新', message=str)
 
 
       
@@ -98,7 +98,7 @@ class xuehaiziyuan:
       if defaultTest:
          content = self.testHtml()
       else:
-        url = 'http://www.xuehaiziyuan.com/?page=1'
+        url = 'http://www.youkeziyuan.com/?page=1'
         headers = {
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "accept-language": "zh-CN,zh;q=0.9",
@@ -106,7 +106,7 @@ class xuehaiziyuan:
             "pragma": "no-cache",
             "upgrade-insecure-requests": "1",
             "cookie": "__51cke__=; timezone=8; __tins__21995819=%7B%22sid%22%3A%201768876943491%2C%20%22vd%22%3A%2039%2C%20%22expires%22%3A%201768880497282%7D; __51laig__=39",
-            "Referer": "http://www.xuehaiziyuan.com/page_11.html",
+            "Referer": "http://www.youkeziyuan.com/page_11.html",
             "Referrer-Policy": "strict-origin-when-cross-origin"
         }
         html_content = requests.get(headers=headers,url=url)
@@ -120,9 +120,9 @@ class xuehaiziyuan:
          self.log(f'getMainHtml测试')
          content = self.testHtml()
       else:
-        url = f'http://www.xuehaiziyuan.com/page_{index}.html'
+        url = f'http://www.youkeziyuan.com/page_{index}/'
         if index == 1:
-          url = 'http://www.xuehaiziyuan.com/?page=1'
+          url = 'http://www.youkeziyuan.com/?page=1'
         headers = {
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "accept-language": "zh-CN,zh;q=0.9",
@@ -130,7 +130,7 @@ class xuehaiziyuan:
             "pragma": "no-cache",
             "upgrade-insecure-requests": "1",
             "cookie": "__51cke__=; timezone=8; __tins__21995819=%7B%22sid%22%3A%201768876943491%2C%20%22vd%22%3A%2039%2C%20%22expires%22%3A%201768880497282%7D; __51laig__=39",
-            "Referer": "http://www.xuehaiziyuan.com/page_11.html",
+            "Referer": "http://www.youkeziyuan.com/page_11.html",
             "Referrer-Policy": "strict-origin-when-cross-origin"
         }
         html_content = requests.get(headers=headers,url=url)
@@ -143,6 +143,7 @@ class xuehaiziyuan:
       # 方法1：使用XPath提取列表项
       products = tree.xpath('//a[@class="tzt-media-box"]')
       for idx, product in enumerate(products, 1):
+          # tzt-media-box_title
           title_elements = product.xpath('.//h3[@class="tzt-media-box_title"]/text()')
           title = title_elements[0].strip() if title_elements else "未找到标题"
           # if title in defaultContent and title not in '未找到标题':
@@ -186,13 +187,14 @@ class xuehaiziyuan:
           "pragma": "no-cache",
           "upgrade-insecure-requests": "1",
           "cookie": "__51cke__=; timezone=8; __tins__21995819=%7B%22sid%22%3A%201768876943491%2C%20%22vd%22%3A%2039%2C%20%22expires%22%3A%201768880497282%7D; __51laig__=39",
-          "Referer": "http://www.xuehaiziyuan.com/page_11.html",
+          "Referer": "http://www.youkeziyuan.com/page_11.html",
           "Referrer-Policy": "strict-origin-when-cross-origin"
       }
+
       html_content = requests.get(headers=headers,url=url)
       
       
-      self.log('执行下一步网页：',html_content.status_code)
+      self.log(f'执行下一步网页：{url} 接口返回：{html_content.status_code}')
       self.nextPageDetail(html_content.text, message)
 
 
@@ -207,6 +209,8 @@ class xuehaiziyuan:
         status = len(linkKeyWord) >= 1 and len(link) >= 1 and 'https://' in link[0].strip() and '链接' in linkKeyWord[0].strip()
         
         if status == True:
+          
+          self.log(f"网盘链接地址：{link[0]}")
           newMessage = ','.join([saveMessage, link[0]])
           global defaultContent
           defaultContent = f"{defaultContent} |a|a| {newMessage}"

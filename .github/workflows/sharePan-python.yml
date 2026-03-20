@@ -39,4 +39,5 @@ jobs:
               SHOWDOC_TOKEN: ${{ secrets.SHOWDOC_TOKEN }}
               SHOWDOC_PIN: ${{ secrets.SHOWDOC_PIN }}
               LETSERVER_TOKEN: ${{ secrets.LETSERVER_TOKEN }}
-        run: python ./python/xuehaiziyuan.py
+        # run: python ./python/xuehaiziyuan.py
+        run: python ./python/youkeziyuan.py
