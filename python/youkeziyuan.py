@@ -79,6 +79,10 @@ class xuehaiziyuan:
         if len(content) == 0:
            self.log("writeContent content empty 无法消息通知")
            return
+        if len(content) >= 15:
+           
+           self.log("writeContent content empty 网盘分享内容更新太多")
+           return
         arr = []
         for item in content:
            arrStr = item.split(',')
@@ -88,7 +92,7 @@ class xuehaiziyuan:
         str = '\n'.join(arr)
         print(f"writeContent str====:{str}")
         
-        # notificationTool().main(titleMsg='网盘分享内容更新', message=str)
+        notificationTool().main(titleMsg='网盘分享内容更新', message=str)
 
 
       
@@ -174,9 +178,9 @@ class xuehaiziyuan:
       endLists = lists[len(lists) - 1].xpath('./a/text()')
       if len(endLists) >= 1:
         endPage = endLists[0].strip().replace('共','').replace('页','')
-        # TODO: 测试数据
-        # global defaultTotalPages
-        # defaultTotalPages = int(endPage)
+        
+        global defaultTotalPages
+        defaultTotalPages = int(endPage)
 
 
     # 获取网页内容
