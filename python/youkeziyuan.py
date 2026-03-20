@@ -206,8 +206,10 @@ class xuehaiziyuan:
       for idx, listItem in enumerate(lists, 1):
         linkKeyWord = listItem.xpath('.//span/text()')
         link = listItem.xpath('.//a/text()')
+        # xuehaiziyuan====:详情页   linkKeyWord：['https://pan.quark.cn/s/2700ecfb78a4']--------link[]
         self.log(f"详情页   linkKeyWord：{linkKeyWord}--------link{link}")
-        status = len(linkKeyWord) >= 1 and len(link) >= 1 and 'https://' in link[0].strip() and '链接' in linkKeyWord[0].strip()
+        # status = len(linkKeyWord) >= 1 and len(link) >= 1 and 'https://' in link[0].strip() and '链接' in linkKeyWord[0].strip()
+        status = len(linkKeyWord) >= 1 and 'https://pan.quark.cn' in linkKeyWord[0].strip()
         
         if status == True:
           self.log(f"详情页网盘链接地址：{link[0]}")
