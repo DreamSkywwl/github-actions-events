@@ -1,193 +1,105 @@
-# -*- coding: utf-8 -*-
-# 一小时计数一次
 
-import os 
-from os.path import join, getsize 
-import pip
 import requests
-import json
-from urllib.parse import quote, unquote
-import feedparser
-import time
-from datetime import datetime
-from bs4 import BeautifulSoup
-import pytz
-from notificationTool import notificationTool
-# from toolsSaveTime import TimeTracker
-import utils
+from xml.etree import ElementTree as ET
+from urllib.parse import urljoin
 
-timeMaxLine = 3600
-
-class fuliba: 
-    def fetch_rss_with_user_agent(url, user_agent=None):
-      """
-      使用指定的User-Agent获取RSS feed，避免RemoteDisconnected错误
-      """
-      # 设置默认的User-Agent
-      if user_agent is None:
-          user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
-      
-      # 使用requests获取RSS内容
-      headers = {'User-Agent': user_agent}
-      try:
-          response = requests.get(url, headers=headers, timeout=10)
-          # response.raise_for_status()
-          print(f"response====:{response.content}")
-          print(f"status_code====:{response.status_code}")
-          print(f"response.text====:{response.text}")
-          return None
-          # 使用feedparser解析RSS内容
-          # feed = feedparser.parse(response.content)
-          # return feed
-          
-      except requests.exceptions.RequestException as e:
-          print(f"请求错误: {e}")
-          return None
-      except Exception as e:
-          print(f"解析错误: {e}")
-          return None 
-    def netWork(self):
-        url = 'https://fuliba.net/feed'
-        # feed = feedparser.parse(url)
-        feed = self.fetch_rss_with_user_agent(url)
-        if feed is None:
-            notificationTool().main('知乎文章pass', '不能为空')
-            return
-        arrContent = []
-        for entry in feed['entries']:
-            # print(entry.keys())
-            oneTime = entry['published']
-            if self.transformTime(oneTime):
-                arrContent.append(entry['title'] + '-----: ' + entry['link'])
-            else:
-                print(entry['title'] + ' -----:' + entry['link'] + ' -----' + oneTime)
-
-        return arrContent
-
-    def transformTime(self,oneTime):
-        # 解析目标时间
-        target_time = datetime.strptime(oneTime, "%a, %d %b %Y %H:%M:%S %z")
-        
-        # 设置目标时区为上海
-        target_time = target_time.astimezone(pytz.timezone('Asia/Shanghai'))
-        
-        # 获取当前时间（上海时区）
-        now = datetime.now(pytz.timezone('Asia/Shanghai'))
-        
-        # 计算时间差
-        time_diff = now - target_time
-        # print('time_diff:',time_diff,sep='--------')
-        print("time_diff:{} | target_time:{} | now:{}".format(time_diff.total_seconds(),target_time,now))
-        return time_diff.total_seconds() <= timeMaxLine        
+def fetch_rss_with_headers(url, headers=None):
+    """
+    获取RSS源并添加请求头信息
     
-
-class juejin:
-    def loadData(self,uuid):
-        urlValueJueJin ='https://api.juejin.cn/content_api/v1/article/query_list?aid=2608&uuid=7351316729601197608&spider=0'
+    Args:
+        url (str): RSS源URL
+        headers (dict): 请求头信息
+    
+    Returns:
+        list: 解析后的RSS条目列表
+    """
+    # 如果没有提供headers，则使用默认的User-Agent
+    if headers is None:
         headers = {
-            'accept':'*/*',
-            "Content-Type": "application/json",
-            'accept-language':'zh-CN,zh;q=0.9',
-            'content-type':'application/json',
-            'origin':'https://juejin.cn',
-            'priority':'u=1, i',
-            'referer':'https://juejin.cn/',
-            'sec-ch-ua':'"Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
-            'sec-ch-ua-mobile':'?0',
-            'sec-ch-ua-platform':'"Windows"',
-            'sec-fetch-dest':'empty',
-            'sec-fetch-mode':'cors',
-            'sec-fetch-site':'same-site',
-            'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
-            'x-secsdk-csrf-token':'0001000000018142c0fe5e0687deb4fef31b493dcc253134c075f09cf887ff59ff118343d78c188814669520f224',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
-        data = {"user_id":uuid,"sort_type":2,"cursor":"0"}
-        requests.adapters.DEFAULT_RETRIES = 5 # 增加重连次数
-        s = requests.session()
-        s.keep_alive = False # 关闭多余连接
-        respose = s.post(url=urlValueJueJin,headers=headers,data=json.dumps(data))
-        resultData = respose.json()
+    
+    try:
+        # 发送GET请求，包含请求头
+        response = requests.get(url, headers=headers, timeout=10)
         
-        # print('resultData:', resultData)
+        # 检查响应状态码
+        if response.status_code != 200:
+            print(f"请求失败，状态码: {response.status_code}")
+            return []
         
-        arrContent = []
-        if resultData['err_no'] == 0 and resultData['err_msg'] == 'success':
-            firstData = resultData['data']
-            for item in firstData:
-                itemID = item['article_id']
-                titleValue = item['article_info']['title']
-                brief_content = item['article_info']['brief_content']
-                cover_image = item['article_info']['cover_image']
-                ctime = item['article_info']['mtime']
-                
-                if ctime == None:
-                    ctime = item['article_info']['ctime']
-                createTime = self.transformTime(ctime)
-                
-                if createTime:
-                  arrContent.append(titleValue + '-----:' + 'https://juejin.cn/post/' + str(itemID))
+        # 显式设置编码为utf-8
+        response.encoding = 'utf-8'
+        
+        # 检查Content-Type是否为XML类型
+        content_type = response.headers.get('content-type', '')
+        if 'xml' not in content_type.lower() and 'rss' not in content_type.lower():
+            print(f"警告: 内容类型不是XML或RSS: {content_type}")
+        
+        # 解析XML内容
+        root = ET.fromstring(response.text)
+        
+        # 根据RSS类型解析条目
+        items = []
+        
+        # 处理RSS 2.0格式
+        if root.tag == 'rss':
+            channel = root.find('channel')
+            if channel is not None:
+                for item in channel.findall('item'):
+                    title = item.findtext('title', '')
+                    link = item.findtext('link', '')
+                    pub_date = item.findtext('pubDate', '')
+                    description = item.findtext('description', '')
                     
+                    items.append({
+                        'title': title,
+                        'link': link,
+                        'pub_date': pub_date,
+                        'description': description
+                    })
         
-        return arrContent
+        # 处理Atom格式
+        elif root.tag == '{http://www.w3.org/2005/Atom}feed':
+            for entry in root.findall('{http://www.w3.org/2005/Atom}entry'):
+                title = entry.findtext('{http://www.w3.org/2005/Atom}title', '')
+                link_elem = entry.find('{http://www.w3.org/2005/Atom}link')
+                link = link_elem.get('href') if link_elem is not None else ''
+                pub_date = entry.findtext('{http://www.w3.org/2005/Atom}published', '')
+                description = entry.findtext('{http://www.w3.org/2005/Atom}summary', '')
+                
+                items.append({
+                    'title': title,
+                    'link': link,
+                    'pub_date': pub_date,
+                    'description': description
+                })
+        
+        return items
+        
+    except requests.exceptions.RequestException as e:
+        print(f"请求错误: {e}")
+        return []
+    except ET.ParseError as e:
+        print(f"XML解析错误: {e}")
+        return []
+    except Exception as e:
+        print(f"未知错误: {e}")
+        return []
 
-    def transformTime(self,timeString):
-        py = pytz.timezone('Asia/Shanghai')
-        old_time = datetime.fromtimestamp(float(timeString), py)
-        now_time = datetime.now(py)
-        totleTime = (now_time - old_time)
-        print("timeString:{}--old_time:{}--total_seconds:{}--timeMaxLine:{}".format(timeString,old_time,totleTime.total_seconds(),timeMaxLine))
-        
-        if totleTime.total_seconds() <= timeMaxLine:
-            return True
-        else:
-            return False
-
-      
-class result_model:
-    def total_func():
-        arrOne = []
-        arrOne = fuliba().netWork()
-        arr_uuids = ['1574156384091320', '3483683111318823', '2946346894759319', '53218623894222','1139531179102392','1063982986187486','3298190611978526']
-        
-        arrSecond = []
-        for item in arr_uuids:
-            arrThird = juejin().loadData(item)
-            arrSecond.extend(arrThird)
-            time.sleep(2)
-        title = '文章更新汇总'
-        
-        if len(arrOne) == 0:
-            title = '掘金文章更新'
-        if len(arrSecond) == 0:
-            title = '知乎文章更新'
-        arrLast = arrOne+arrSecond
-        content = '\n'.join(arrLast)
-
-        if len(arrLast) != 0:
-            notificationTool().main(title, content)
-                      
-def main_handler():
-  global timeMaxLine
-  timeMaxLine = TimeTracker().main(filename='dayToHour_actions')
-  if not timeMaxLine:
-      timeMaxLine = 3600
-  
-  print('timeMaxLine---------{}'.format(timeMaxLine))
-  result_model.total_func()
+# 示例使用
+if __name__ == "__main__":
+    # RSS源URL
+    rss_url = "https://feeds.bbci.co.uk/news/rss.xml"
     
+    # 自定义请求头
+    custom_headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'application/rss+xml, application/xml;q=0.9, */*;q=0.8'
+    }
     
-if __name__ == '__main__':
-    # print('触发__name__')
-    # main_handler()
-
-    response = utils.get('https://fuliba.net')
-    print(f"====:{response.text}")
-
+    # 获取RSS内容
+    rss_items = fetch_rss_with_headers(rss_url, custom_headers)
+    print(f"====:{rss_items}")
     
-
-""" 
-https://fuliba.net
-https://fuliba123.com
-
-http.client.RemoteDisconnected: Remote end closed connection without response
- """
