@@ -218,7 +218,7 @@ class youkeziyuan:
         
         if status == True:
           linkValue = linkKeyWord[0].strip()
-          if 'https://pan.quark.cn' in linkKeyWord[1].strip():
+          if len(linkKeyWord) >= 2 and 'https://pan.quark.cn' in linkKeyWord[1].strip():
              linkValue = linkKeyWord[1].strip()
           self.log(f"详情页网盘链接地址：{linkValue}")
           newMessage = ','.join([saveMessage, linkValue])
