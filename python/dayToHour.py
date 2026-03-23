@@ -13,7 +13,8 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import pytz
 from notificationTool import notificationTool
-from toolsSaveTime import TimeTracker
+# from toolsSaveTime import TimeTracker
+import utils
 
 timeMaxLine = 3600
 
@@ -178,9 +179,10 @@ def main_handler():
 if __name__ == '__main__':
     # print('触发__name__')
     # main_handler()
-    
-    arrOne = fuliba().netWork()
-    print(f"====:{arrOne}")
+
+    response = utils.get('https://fuliba.net')
+    print(f"====:{response}")
+
     
 
 """ 
