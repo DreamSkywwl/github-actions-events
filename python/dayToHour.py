@@ -17,10 +17,35 @@ from toolsSaveTime import TimeTracker
 
 timeMaxLine = 3600
 
-class fuliba:  
+class fuliba: 
+    def fetch_rss_with_user_agent(url, user_agent=None):
+      """
+      使用指定的User-Agent获取RSS feed，避免RemoteDisconnected错误
+      """
+      # 设置默认的User-Agent
+      if user_agent is None:
+          user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+      
+      # 使用requests获取RSS内容
+      headers = {'User-Agent': user_agent}
+      try:
+          response = requests.get(url, headers=headers, timeout=10)
+          response.raise_for_status()
+          
+          # 使用feedparser解析RSS内容
+          feed = feedparser.parse(response.content)
+          return feed
+          
+      except requests.exceptions.RequestException as e:
+          print(f"请求错误: {e}")
+          return None
+      except Exception as e:
+          print(f"解析错误: {e}")
+          return None 
     def netWork(self):
         url = 'https://fuliba.net/feed'
-        feed = feedparser.parse(url)
+        # feed = feedparser.parse(url)
+        feed = self.fetch_rss_with_user_agent(url)
         arrContent = []
         for entry in feed['entries']:
             # print(entry.keys())
