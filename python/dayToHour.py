@@ -30,11 +30,14 @@ class fuliba:
       headers = {'User-Agent': user_agent}
       try:
           response = requests.get(url, headers=headers, timeout=10)
-          response.raise_for_status()
+          # response.raise_for_status()
           print(f"response====:{response.content}")
+          print(f"status_code====:{response.status_code}")
+          print(f"response.text====:{response.text}")
+          return None
           # 使用feedparser解析RSS内容
-          feed = feedparser.parse(response.content)
-          return feed
+          # feed = feedparser.parse(response.content)
+          # return feed
           
       except requests.exceptions.RequestException as e:
           print(f"请求错误: {e}")

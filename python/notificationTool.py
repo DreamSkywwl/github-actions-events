@@ -53,7 +53,7 @@ class notificationTool:
 
         response = requests.get(url, headers=headers)
 
-        print(f'notificationWe_letserver error:{response.text}')
+        print(f'notificationWe_letserver error:{response.content}')
           
 
  
