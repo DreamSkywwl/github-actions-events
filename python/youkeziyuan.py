@@ -24,7 +24,7 @@ defaultRepeatCount = 0
 
 # -------------------类------------------------
 
-class xuehaiziyuan:
+class youkeziyuan:
       
     # 初始化---->
     def run(self):
@@ -45,14 +45,16 @@ class xuehaiziyuan:
         
         global defaultNetContent
         defaultNetContent = FileTracker().getContent(defaultFile)
-        self.log(f"defaultNetContent====: {defaultNetContent}")
+        # self.log(f"defaultNetContent====: {defaultNetContent}")
         self.test_xuehaiziyuan()
         self.log(f'一共{defaultTotalPages}页')
 
         for index in range(defaultTotalPages):
-            if defaultRepeatCount >= 3:
-               break
+            # 临时解锁一下
+            # if defaultRepeatCount >= 3:
+            #    break
             time.sleep(10)
+            self.log(f"正在解析第{index+1}页")
             self.getMainHtml(index + 1)
 
         arrContent = defaultContent.split(' |a|a| ')
@@ -60,14 +62,14 @@ class xuehaiziyuan:
         if len(arrContent) == 0:
            print('arrContent======数据为空')
         else:
-          self.log(arrContent)
+          # self.log(arrContent)
           for item in arrContent:
             if item not in defaultNetContent:
                 defaultNetContent = f"{defaultNetContent}\n{item}"
                 printContent.append(item)
           
           self.writeContent(printContent)
-          print(f"save to last defaultNetContent====:{defaultNetContent}")
+          # print(f"save to last defaultNetContent====:{defaultNetContent}")
           FileTracker().saveContent(defaultFile, defaultNetContent)
 
 
@@ -80,7 +82,6 @@ class xuehaiziyuan:
            self.log("writeContent content empty 无法消息通知")
            return
         if len(content) >= 15:
-           
            self.log("writeContent content empty 网盘分享内容更新太多")
            return
         arr = []
@@ -167,7 +168,7 @@ class xuehaiziyuan:
             lastContent = ','.join([title,link, productTag,productTime])
             if not self.getContent(lastContent):
               self.getHtmlNext(link, lastContent)
-              self.log('sleep 3s')
+              # self.log('sleep 3s')
               time.sleep(3)
             
           
@@ -204,20 +205,23 @@ class xuehaiziyuan:
 
 
     def nextPageDetail(self,content, saveMessage):
-      self.log(f"XPath解析:nextPageDetail:{content}")
+      # self.log(f"XPath解析:nextPageDetail:{content}")
       tree = html.fromstring(content)
       lists = tree.xpath('.//div[@id="viewer"]/p')
       for idx, listItem in enumerate(lists, 1):
         linkKeyWord = listItem.xpath('.//span/text()')
         link = listItem.xpath('.//a/text()')
         # xuehaiziyuan====:详情页   linkKeyWord：['https://pan.quark.cn/s/2700ecfb78a4']--------link[]
-        self.log(f"详情页   linkKeyWord：{linkKeyWord}--------link{link}")
+        # self.log(f"详情页   linkKeyWord：{linkKeyWord}--------link{link}")
         # status = len(linkKeyWord) >= 1 and len(link) >= 1 and 'https://' in link[0].strip() and '链接' in linkKeyWord[0].strip()
-        status = len(linkKeyWord) >= 1 and 'https://pan.quark.cn' in linkKeyWord[0].strip()
+        status = len(linkKeyWord) >= 1 and ('https://pan.quark.cn' in linkKeyWord[0].strip() or 'https://pan.quark.cn' in linkKeyWord[1].strip())
         
         if status == True:
-          self.log(f"详情页网盘链接地址：{linkKeyWord[0]}")
-          newMessage = ','.join([saveMessage, linkKeyWord[0]])
+          linkValue = linkKeyWord[0].strip()
+          if 'https://pan.quark.cn' in linkKeyWord[1].strip():
+             linkValue = linkKeyWord[1].strip()
+          self.log(f"详情页网盘链接地址：{linkValue}")
+          newMessage = ','.join([saveMessage, linkValue])
           global defaultContent
           defaultContent = f"{defaultContent} |a|a| {newMessage}"
           break
@@ -247,7 +251,7 @@ class xuehaiziyuan:
 
 
 
-xuehaiziyuan().run()
+youkeziyuan().run()
 
 
 # https://github.com/DreamSkywwl/github-actions-events/actions/workflows/sharePan-python.yml
