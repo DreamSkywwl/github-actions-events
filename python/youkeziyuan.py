@@ -212,9 +212,9 @@ class youkeziyuan:
         linkKeyWord = listItem.xpath('.//span/text()')
         link = listItem.xpath('.//a/text()')
         # xuehaiziyuan====:详情页   linkKeyWord：['https://pan.quark.cn/s/2700ecfb78a4']--------link[]
-        # self.log(f"详情页   linkKeyWord：{linkKeyWord}--------link{link}")
+        self.log(f"详情页   linkKeyWord：{linkKeyWord}--------link{link}")
         # status = len(linkKeyWord) >= 1 and len(link) >= 1 and 'https://' in link[0].strip() and '链接' in linkKeyWord[0].strip()
-        status = len(linkKeyWord) >= 1 and ('https://pan.quark.cn' in linkKeyWord[0].strip() or 'https://pan.quark.cn' in linkKeyWord[1].strip())
+        status = len(linkKeyWord) >= 1 and (any('https://pan.quark.cn' in element for element in linkKeyWord))
         
         if status == True:
           linkValue = linkKeyWord[0].strip()
