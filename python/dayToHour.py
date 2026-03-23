@@ -91,7 +91,7 @@ def fetch_rss_with_headers(url, headers=None):
 # 示例使用
 if __name__ == "__main__":
     # RSS源URL
-    rss_url = "https://feeds.bbci.co.uk/news/rss.xml"
+    rss_url = 'https://fuliba.net/feed'
     
     # 自定义请求头
     custom_headers = {
