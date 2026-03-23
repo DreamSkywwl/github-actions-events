@@ -28,7 +28,7 @@ def fetch_rss_with_headers(url, headers=None):
             print(f"请求失败，状态码: {response.status_code}")
             return []
         
-        print(f"response.text====:{response.text}")
+        # print(f"response.text====:{response.text}")
         
         # 显式设置编码为utf-8
         response.encoding = 'utf-8'

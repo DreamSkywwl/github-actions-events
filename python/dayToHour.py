@@ -26,15 +26,14 @@ class fuliba:
         feed = rss.fetch_rss_with_headers(url=url)
         if feed is None or len(feed) == 0:
             notificationTool().main('知乎文章pass', '不能为空')
-            return
+            return []
         arrContent = []
         for entry in feed:
-            # print(entry.keys())
             oneTime = entry['pub_date']
             if self.transformTime(oneTime):
                 arrContent.append(entry['title'] + '-----: ' + entry['link'])
-            else:
-                print(entry['title'] + ' -----:' + entry['link'] + ' -----' + oneTime)
+            # else:
+            #     print(entry['title'] + ' -----:' + entry['link'] + ' -----' + oneTime)
 
         return arrContent
 
@@ -109,7 +108,7 @@ class juejin:
         old_time = datetime.fromtimestamp(float(timeString), py)
         now_time = datetime.now(py)
         totleTime = (now_time - old_time)
-        print("timeString:{}--old_time:{}--total_seconds:{}--timeMaxLine:{}".format(timeString,old_time,totleTime.total_seconds(),timeMaxLine))
+        # print("timeString:{}--old_time:{}--total_seconds:{}--timeMaxLine:{}".format(timeString,old_time,totleTime.total_seconds(),timeMaxLine))
         
         if totleTime.total_seconds() <= timeMaxLine:
             return True
@@ -158,6 +157,8 @@ if __name__ == '__main__':
 """ 
 https://fuliba.net
 https://fuliba123.com
-
-http.client.RemoteDisconnected: Remote end closed connection without response
  """
+
+'''
+https://github.com/DreamSkywwl/github-actions-events/actions/workflows/hourly-python.yml
+'''
