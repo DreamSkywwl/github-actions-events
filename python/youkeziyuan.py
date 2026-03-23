@@ -51,8 +51,8 @@ class youkeziyuan:
 
         for index in range(defaultTotalPages):
             # 临时解锁一下
-            # if defaultRepeatCount >= 3:
-            #    break
+            if defaultRepeatCount >= 3:
+               break
             time.sleep(10)
             self.log(f"正在解析第{index+1}页")
             self.getMainHtml(index + 1)
