@@ -46,7 +46,7 @@ class fuliba:
         url = 'https://fuliba.net/feed'
         # feed = feedparser.parse(url)
         feed = self.fetch_rss_with_user_agent(url)
-        if feed in None:
+        if feed is None:
             notificationTool().main('知乎文章pass', '')
             return
         arrContent = []
