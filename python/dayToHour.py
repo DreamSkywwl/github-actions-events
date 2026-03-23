@@ -47,7 +47,7 @@ class fuliba:
         # feed = feedparser.parse(url)
         feed = self.fetch_rss_with_user_agent(url)
         if feed is None:
-            notificationTool().main('知乎文章pass', '')
+            notificationTool().main('知乎文章pass', '不能为空')
             return
         arrContent = []
         for entry in feed['entries']:
@@ -174,7 +174,10 @@ def main_handler():
     
 if __name__ == '__main__':
     # print('触发__name__')
-    main_handler()
+    # main_handler()
+    
+    arrOne = fuliba().netWork()
+    print(f"====:{arrOne}")
     
 
 """ 
