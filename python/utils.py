@@ -25,7 +25,7 @@ def get(url,data = None):
     response = requests.get(url,headers=default_headers, data=data)
     try:
         response.raise_for_status()
-        return response.content
+        return response
     except requests.exceptions.HTTPError as err:
         print(f"Utils get 错误发生: {err}")
         return None
