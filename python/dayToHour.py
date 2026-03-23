@@ -31,7 +31,7 @@ class fuliba:
       try:
           response = requests.get(url, headers=headers, timeout=10)
           response.raise_for_status()
-          
+          print(f"response====:{response.content}")
           # 使用feedparser解析RSS内容
           feed = feedparser.parse(response.content)
           return feed
@@ -46,6 +46,9 @@ class fuliba:
         url = 'https://fuliba.net/feed'
         # feed = feedparser.parse(url)
         feed = self.fetch_rss_with_user_agent(url)
+        if feed in None:
+            notificationTool().main('知乎文章pass', '')
+            return
         arrContent = []
         for entry in feed['entries']:
             # print(entry.keys())
