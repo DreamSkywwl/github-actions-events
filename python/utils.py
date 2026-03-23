@@ -5,18 +5,20 @@
 import requests
 
 default_headers = {
-  'accept':'*/*',
-  "Content-Type": "application/json",
-  'accept-language':'zh-CN,zh;q=0.9',
-  'content-type':'application/json',
-  'priority':'u=1, i',
-  'sec-ch-ua':'"Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
-  'sec-ch-ua-mobile':'?0',
-  'sec-ch-ua-platform':'"Windows"',
-  'sec-fetch-dest':'empty',
-  'sec-fetch-mode':'cors',
-  'sec-fetch-site':'same-site',
-  'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+   "accept": "*/*",
+    "accept-language": "zh-CN,zh;q=0.9",
+    "authorization": "Bearer null",
+    "cache-control": "no-cache",
+    "content-type": "application/json",
+    "pragma": "no-cache",
+    "sec-ch-ua": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+    "Referer": "https://hellogithub.com/",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
 }
 
 def get(url,data = None):

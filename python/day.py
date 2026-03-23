@@ -154,7 +154,7 @@ class hellogithub_rss:
         url = 'https://api.hellogithub.com/v1/periodical/' 
         responseValue = requests.get(url=url,headers=hellogithub_header)
         res = responseValue.json()
-        print()
+        
         if res['success'] == True and responseValue.status_code == 200:
             currentData = res['volumes'][0]
             if self.time_diff(currentData['lastmod']) :

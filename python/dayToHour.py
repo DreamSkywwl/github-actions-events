@@ -181,7 +181,7 @@ if __name__ == '__main__':
     # main_handler()
 
     response = utils.get('https://fuliba.net')
-    print(f"====:{response}")
+    print(f"====:{response.content}")
 
     
 
