@@ -19,6 +19,7 @@ from toolsSaveTime import TimeTracker
 import rss
 
 timeMaxLine = 3600
+writeFile = 'dayToHour_actions'
 
 class fuliba: 
     def netWork(self):
@@ -137,11 +138,12 @@ class result_model:
         content = '\n'.join(arrLast)
 
         if len(arrLast) != 0:
+            TimeTracker().setTimes(filename=writeFile)
             notificationTool().main(title, content)
                       
 def main_handler():
   global timeMaxLine
-  timeMaxLine = TimeTracker().main(filename='dayToHour_actions')
+  timeMaxLine = TimeTracker().getTimes(filename=writeFile)
   if not timeMaxLine:
       timeMaxLine = 3600
   
