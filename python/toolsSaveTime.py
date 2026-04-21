@@ -150,7 +150,16 @@ class TimeTracker:
       target_repo = self.smallWay(filename=filename)
       # 定义时间戳文件路径
       timestamp_file = filename + '.txt'
-      return self.load_last_time(target_repo,timestamp_file)
+      # 加载上次执行时间
+      last_time = self.load_last_time(target_repo, timestamp_file)
+      
+      # 保存当前时间到目标仓库
+      current_time_str = self.save_current_time(target_repo, timestamp_file)
+      current_time = datetime.fromisoformat(current_time_str)
+      
+      # 计算时间差
+      time_diff = self.calculate_time_difference(last_time, current_time)
+      return time_diff
       
       
 # if __name__ == "__main__":
