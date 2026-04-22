@@ -1,6 +1,6 @@
 import json
 import requests
-def safe_request(url, method='GET',type="json" **kwargs):
+def safe_request(url, method='GET',type="json",**kwargs):
 # def get_requests(item):
     try:
         # 发送请求示例，请替换为你实际的请求逻辑
