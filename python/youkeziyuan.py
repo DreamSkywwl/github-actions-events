@@ -5,7 +5,7 @@ import os
 import time
 from notificationTool import notificationTool 
 from toolsSaveFile import FileTracker
-
+from toolsNetWork import safe_request
 
 # https://github.com/DreamSkywwl/github-actions-events/actions/workflows/sharePan-python.yml
 
@@ -114,9 +114,10 @@ class youkeziyuan:
             "Referer": "http://www.youkeziyuan.com/page_11.html",
             "Referrer-Policy": "strict-origin-when-cross-origin"
         }
-        html_content = requests.get(headers=headers,url=url)
-        content = html_content.text
-      self.getTotalPage(content)
+        # html_content = requests.get(headers=headers,url=url)
+        content = safe_request(url=url,type='text', headers=headers)
+      if content is not None and content != '':
+        self.getTotalPage(content)
 
     # 获取网页内容
     def getMainHtml(self,index):
@@ -138,9 +139,12 @@ class youkeziyuan:
             "Referer": "http://www.youkeziyuan.com/page_11.html",
             "Referrer-Policy": "strict-origin-when-cross-origin"
         }
-        html_content = requests.get(headers=headers,url=url)
-        content = html_content.text
-      self.analysisHtml(content)
+        
+        content = safe_request(url=url,type='text', headers=headers)
+        # html_content = requests.get(headers=headers,url=url)
+        # content = html_content.text
+      if content is not None and content != '':
+        self.analysisHtml(content)
 
     # 解析网页内容
     def analysisHtml(self,content):
@@ -196,12 +200,13 @@ class youkeziyuan:
           "Referer": "http://www.youkeziyuan.com/page_11.html",
           "Referrer-Policy": "strict-origin-when-cross-origin"
       }
-
-      html_content = requests.get(headers=headers,url=url)
       
+      html_content = safe_request(url=url,type='text', headers=headers)
+      # html_content = requests.get(headers=headers,url=url)
       
-      self.log(f'执行下一步网页：{url} 接口返回：{html_content.status_code}')
-      self.nextPageDetail(html_content.text, message)
+      if html_content is not None:  
+        self.log(f'执行下一步网页：{url}')
+        self.nextPageDetail(html_content, message)
 
 
     def nextPageDetail(self,content, saveMessage):

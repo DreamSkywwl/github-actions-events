@@ -16,6 +16,8 @@ from notificationTool import notificationTool
 # from {TimeTracker} import toolsSaveTime
 
 from toolsSaveTime import TimeTracker
+
+from toolsNetWork import safe_request
 import rss
 
 timeMaxLine = 3600
@@ -76,16 +78,12 @@ class juejin:
             'x-secsdk-csrf-token':'0001000000018142c0fe5e0687deb4fef31b493dcc253134c075f09cf887ff59ff118343d78c188814669520f224',
         }
         data = {"user_id":uuid,"sort_type":2,"cursor":"0"}
-        requests.adapters.DEFAULT_RETRIES = 5 # 增加重连次数
-        s = requests.session()
-        s.keep_alive = False # 关闭多余连接
-        respose = s.post(url=urlValueJueJin,headers=headers,data=json.dumps(data))
-        resultData = respose.json()
         
-        # print('resultData:', resultData)
+        resultData = safe_request(url=urlValueJueJin, method='POST',headers=headers,data = json.dumps(data))
+        
         
         arrContent = []
-        if resultData['err_no'] == 0 and resultData['err_msg'] == 'success':
+        if resultData is not None and resultData['err_no'] == 0 and resultData['err_msg'] == 'success':
             firstData = resultData['data']
             for item in firstData:
                 itemID = item['article_id']
