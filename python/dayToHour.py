@@ -25,11 +25,17 @@ writeFile = 'dayToHour_actions'
 
 class fuliba: 
     def netWork(self):
-        url = 'https://fuliba.net/feed'
+        print("========")
+        url = 'https://fuliba2023.net/feed'
         feed = rss.fetch_rss_with_headers(url=url)
         if feed is None or len(feed) == 0:
-            notificationTool().main('知乎文章pass', '不能为空')
-            return []
+            url = 'https://fuliba2025.net/feed'
+            feed = rss.fetch_rss_with_headers(url=url)
+            if feed is None or len(feed) == 0:
+                notificationTool().main('知乎文章pass', '不能为空')
+                return []
+        self.netWork_next(feed)
+    def netWork_next(self, feed):
         arrContent = []
         for entry in feed:
             oneTime = entry['pub_date']

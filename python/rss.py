@@ -17,7 +17,18 @@ def fetch_rss_with_headers(url, headers=None):
     # 如果没有提供headers，则使用默认的User-Agent
     if headers is None:
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+            "accept": "*/*",
+            "accept-language": "zh-CN,zh;q=0.9",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "x-requested-with": "fetch",
+            "Referrer-Policy": "no-referrer-when-downgrade"
         }
     
     try:
