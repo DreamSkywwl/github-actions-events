@@ -34,7 +34,7 @@ class fuliba:
             if feed is None or len(feed) == 0:
                 notificationTool().main('知乎文章pass', '不能为空')
                 return []
-        self.netWork_next(feed)
+        return self.netWork_next(feed)
     def netWork_next(self, feed):
         arrContent = []
         for entry in feed:
