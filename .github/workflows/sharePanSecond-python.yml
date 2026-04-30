@@ -14,17 +14,19 @@ jobs:
     steps:
     
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
       
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.8'
+          python-version: '3.10'
 
       - name: Set Beijing Timezone
-        uses: szenius/set-timezone@v1.0
+        uses: szenius/set-timezone@v1.2
         with:
           timezoneLinux: "Asia/Shanghai"
+          timezoneMacos: "Asia/Shanghai"
+          timezoneWindows: "China Standard Time"
       
       - name: Install dependencies
         run: |
