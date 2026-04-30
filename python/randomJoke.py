@@ -44,4 +44,6 @@ if __name__ == '__main__':
 
   result = asyncContent(content)
 
+  print(f"====:{result}")
+
   notificationTool().main(titleMsg='Joke', message=result)
