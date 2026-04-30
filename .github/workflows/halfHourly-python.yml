@@ -1,5 +1,5 @@
 
-name: Hourly Python Script
+name: halfHourly Python Script
 
 on:
   schedule:
