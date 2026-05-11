@@ -1,5 +1,5 @@
 
-name: Hourly Python Script
+name: Python Script--每小时
 
 on:
   schedule:
