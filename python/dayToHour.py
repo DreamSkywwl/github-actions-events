@@ -144,14 +144,14 @@ class result_model:
         if len(arrLast) != 0:
             TimeTracker().setTimes(filename=writeFile)
             notificationTool().main(title, content)
-                      
+
+
 def main_handler():
   global timeMaxLine
   timeMaxLine = TimeTracker().getTimes(filename=writeFile)
+  print(f"timeMaxLine====:{timeMaxLine}")
   if not timeMaxLine:
       timeMaxLine = 3600
-  
-  # print('timeMaxLine---------{}'.format(timeMaxLine))
   result_model.total_func()
     
     
