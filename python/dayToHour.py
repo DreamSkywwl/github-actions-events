@@ -174,7 +174,7 @@ class result_model:
         title = "知乎文章更新"
         content = "\n".join(arrOne)
 
-        if len(arrLast) != 0:
+        if len(arrOne) != 0:
             TimeTracker().setTimes(filename=writeFile)
             notificationTool().main(title, content)
 
