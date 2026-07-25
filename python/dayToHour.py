@@ -40,7 +40,7 @@ class fuliba:
         print("========")
         arrOne = []
         for site in rss_value:
-            feed = turnPages(site)
+            feed = self.turnPages(site)
             if feed is not None:
                 arrOne = feed
                 break;
