@@ -31,7 +31,7 @@ class fuliba:
     def turnPages(self, url):
         feed = rss.fetch_rss_with_headers(url=url)
         print('智慧分割线-----------------------')
-        print(f"url:{url}  feed:{feed} ")
+        print(f"url:{url}  feed:{len(feed)} ")
         if feed:
             return feed
         else:
@@ -174,9 +174,12 @@ class result_model:
         content = "\n".join(arrLast)
         """
         title = "知乎文章更新"
+        print(f"知乎文章更新arrOne====:{len(arrOne)}")
         content = "\n".join(arrOne)
 
-        if len(arrOne) != 0:
+        print(f"====:{content}")
+
+        if len(content) != 0:
             TimeTracker().setTimes(filename=writeFile)
             notificationTool().main(title, content)
 
