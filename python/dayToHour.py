@@ -32,10 +32,10 @@ class fuliba:
         feed = rss.fetch_rss_with_headers(url=url)
         print('智慧分割线-----------------------')
         print(f"url:{url}  feed:{feed} ")
-        if feed is None or len(feed) == 0:
-            return None
-        else:
+        if feed:
             return feed
+        else:
+            return None
         
     
     def netWork(self):
@@ -43,12 +43,14 @@ class fuliba:
         arrOne = []
         for site in rss_value:
             feed = self.turnPages(site)
-            if len(feed) == 0:
+            if feed:
                 arrOne = self.netWork_next(feed)
                 break;
         if len(arrOne) == 0:
             notificationTool().main("知乎文章pass", "不能为空")
             return []
+        else:
+            return arrOne
 
     def netWork_next(self, feed):
         arrContent = []
@@ -56,8 +58,6 @@ class fuliba:
             oneTime = entry["pub_date"]
             if self.transformTime(oneTime):
                 arrContent.append(entry["title"] + "-----: " + entry["link"])
-            # else:
-            #     print(entry['title'] + ' -----:' + entry['link'] + ' -----' + oneTime)
 
         return arrContent
 
