@@ -42,7 +42,7 @@ class fuliba:
         for site in rss_value:
             feed = self.turnPages(site)
             if feed is not None:
-                arrOne = feed
+                arrOne = self.netWork_next(feed)
                 break;
         if len(arrOne) == 0:
             notificationTool().main("知乎文章pass", "不能为空")
