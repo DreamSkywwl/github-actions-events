@@ -43,7 +43,7 @@ class fuliba:
         arrOne = []
         for site in rss_value:
             feed = self.turnPages(site)
-            if feed is not None:
+            if len(feed) == 0:
                 arrOne = self.netWork_next(feed)
                 break;
         if len(arrOne) == 0:

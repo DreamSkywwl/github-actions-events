@@ -172,7 +172,7 @@ class hellogithub_rss:
         
 
 class dayNote:
-    def main(self):
+    def main_v1(self):
         # 获取当前日期
         today = datetime.datetime.now().date()
 
@@ -205,7 +205,46 @@ class dayNote:
         content = f"<p><span style=\"font-size: 18px;\">从2024年5月16日到今天<strong>{today}</strong>天</span></p><p><span style=\"color:#fff\"><span style=\"color: rgb(255,0,0); font-size: 18px;\">尤一已经</span></span><span style=\"color:#fff\"><span style=\"font-size: 18px; text-decoration: underline; color: rgb(255,0,0);\"><em><strong>{years}.{months}</strong></em></span></span><span style=\"color:#fff\"><span style=\"color: #fff; font-size: 18px;\">岁了</span></span></p><p><br/></p>"
 
         notificationTool().main(titleMsg='尤一已经{}.{}岁'.format(years,months), message=content)
+    def main(self):
+        birthdate = datetime.datetime(2024, 5, 16).date()
+        today = datetime.datetime.today()
+        age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+    
+        if age < 0:
+            return "出生日期应该在未来，请检查日期输入。"
+    
+        # 计算月份和日期的差异
+        birthdate_this_year = birthdate.replace(year=today.year)
+        if today < birthdate_this_year:
+            years, months, days = age - 1, 12 + birthdate.month - today.month, birthdate.day - today.day
+        else:
+            years, months, days = age, today.month - birthdate.month, today.day - birthdate.day
+        
+        # 调整天数和月份为负数的情况
+        if days < 0:
+            months -= 1
+            birthdate_last_month = birthdate.replace(month=today.month, day=today.day, year=today.year) - datetime.datetime.timedelta(days=31)
+            days += birthdate_last_month.day
+        
+        if months < 0:
+            years -= 1
+            months += 12
+            birthdate_last_year = birthdate.replace(month=today.month, day=today.day, year=today.year - 1)
+            months += birthdate_last_year.month
+        
+        # 确保天数不超过该月的天数
+        birthdate_this_month = birthdate.replace(month=today.month, year=today.year)
+        days = min(days, birthdate_this_month.day)
 
+        # print(f"从2024年5月16日到今天({today})")
+        # print(f"相差 {total_days} 天")
+        # print(f"一共 {years} 年 {months} 个月")
+        content = ""
+
+        notificationTool().main(titleMsg=f"尤一已经{years}岁，{months}个月，{days}天", message=content)
+    
+        
+        # return f"尤一已经{years}岁，{months}个月，{days}天"
 def handler():
     """ 
     d1 = datetime.datetime.now();
