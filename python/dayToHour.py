@@ -32,10 +32,11 @@ class fuliba:
         feed = rss.fetch_rss_with_headers(url=url)
         print('智慧分割线-----------------------')
         print(f"url:{url}  feed:{len(feed)} ")
-        if feed:
-            return feed
-        else:
+        if feed is None:
             return None
+        else:
+            return feed
+           
         
     
     def netWork(self):
@@ -46,9 +47,10 @@ class fuliba:
             if feed:
                 arrOne = self.netWork_next(feed)
                 break;
-        if len(arrOne) == 0:
-            notificationTool().main("知乎文章pass", "不能为空")
-            return []
+        if arrOne is None:
+            notificationTool().main("知乎服务器Pass", "不能为空")
+        elif len(arrOne) == 0:  # 此时已知 arrOne 不是 None
+            notificationTool().main("知乎文章暂无更新", "不能为空")
         else:
             return arrOne
 
