@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 # 一小时计数一次
 
-import os 
-from os.path import join, getsize 
+import os
+from os.path import join, getsize
 import pip
 import requests
 import json
 from urllib.parse import quote, unquote
+
 # import feedparser
 import time
 from datetime import datetime
 from bs4 import BeautifulSoup
 import pytz
 from notificationTool import notificationTool
+
 # from {TimeTracker} import toolsSaveTime
 
 from toolsSaveTime import TimeTracker
@@ -21,125 +23,156 @@ from toolsNetWork import safe_request
 import rss
 
 timeMaxLine = 3600
-writeFile = 'dayToHour_actions'
+writeFile = "dayToHour_actions"
 
-class fuliba: 
-    def netWork(self):
-        print("========")
-        url = 'https://fuliba2023.net/feed'
+rss_value = ['https://fuliba2023.net/feed', 'https://fuliba2025.net/feed', 'https://fuliba.net/feed', 'https://fuliba66.net/feed', 'https://f.uliba.net/feed']
+class fuliba:
+
+    def turnPages(self, url):
         feed = rss.fetch_rss_with_headers(url=url)
         if feed is None or len(feed) == 0:
-            url = 'https://fuliba2025.net/feed'
-            feed = rss.fetch_rss_with_headers(url=url)
-            if feed is None or len(feed) == 0:
-                notificationTool().main('知乎文章pass', '不能为空')
-                return []
-        return self.netWork_next(feed)
+            return None
+        else:
+            return feed
+        
+    
+    def netWork(self):
+        print("========")
+        arrOne = []
+        for site in rss_value:
+            feed = turnPages(site)
+            if feed is not None:
+                arrOne = feed
+                break;
+        if len(arrOne) == 0:
+            notificationTool().main("知乎文章pass", "不能为空")
+            return []
+
     def netWork_next(self, feed):
         arrContent = []
         for entry in feed:
-            oneTime = entry['pub_date']
+            oneTime = entry["pub_date"]
             if self.transformTime(oneTime):
-                arrContent.append(entry['title'] + '-----: ' + entry['link'])
+                arrContent.append(entry["title"] + "-----: " + entry["link"])
             # else:
             #     print(entry['title'] + ' -----:' + entry['link'] + ' -----' + oneTime)
 
         return arrContent
 
-    def transformTime(self,oneTime):
+    def transformTime(self, oneTime):
         # 解析目标时间
         target_time = datetime.strptime(oneTime, "%a, %d %b %Y %H:%M:%S %z")
-        
+
         # 设置目标时区为上海
-        target_time = target_time.astimezone(pytz.timezone('Asia/Shanghai'))
-        
+        target_time = target_time.astimezone(pytz.timezone("Asia/Shanghai"))
+
         # 获取当前时间（上海时区）
-        now = datetime.now(pytz.timezone('Asia/Shanghai'))
-        
+        now = datetime.now(pytz.timezone("Asia/Shanghai"))
+
         # 计算时间差
         time_diff = now - target_time
         # print('time_diff:',time_diff,sep='--------')
         # print("time_diff:{} | target_time:{} | now:{}".format(time_diff.total_seconds(),target_time,now))
-        return time_diff.total_seconds() <= timeMaxLine        
-    
+        return time_diff.total_seconds() <= timeMaxLine
+
 
 class juejin:
-    def loadData(self,uuid):
-        urlValueJueJin ='https://api.juejin.cn/content_api/v1/article/query_list?aid=2608&uuid=7351316729601197608&spider=0'
+    def loadData(self, uuid):
+        urlValueJueJin = "https://api.juejin.cn/content_api/v1/article/query_list?aid=2608&uuid=7351316729601197608&spider=0"
         headers = {
-            'accept':'*/*',
+            "accept": "*/*",
             "Content-Type": "application/json",
-            'accept-language':'zh-CN,zh;q=0.9',
-            'content-type':'application/json',
-            'origin':'https://juejin.cn',
-            'priority':'u=1, i',
-            'referer':'https://juejin.cn/',
-            'sec-ch-ua':'"Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
-            'sec-ch-ua-mobile':'?0',
-            'sec-ch-ua-platform':'"Windows"',
-            'sec-fetch-dest':'empty',
-            'sec-fetch-mode':'cors',
-            'sec-fetch-site':'same-site',
-            'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
-            'x-secsdk-csrf-token':'0001000000018142c0fe5e0687deb4fef31b493dcc253134c075f09cf887ff59ff118343d78c188814669520f224',
+            "accept-language": "zh-CN,zh;q=0.9",
+            "content-type": "application/json",
+            "origin": "https://juejin.cn",
+            "priority": "u=1, i",
+            "referer": "https://juejin.cn/",
+            "sec-ch-ua": '"Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": '"Windows"',
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+            "x-secsdk-csrf-token": "0001000000018142c0fe5e0687deb4fef31b493dcc253134c075f09cf887ff59ff118343d78c188814669520f224",
         }
-        data = {"user_id":uuid,"sort_type":2,"cursor":"0"}
-        
-        resultData = safe_request(url=urlValueJueJin, method='POST',headers=headers,data = json.dumps(data))
-        
-        
+        data = {"user_id": uuid, "sort_type": 2, "cursor": "0"}
+
+        resultData = safe_request(
+            url=urlValueJueJin, method="POST", headers=headers, data=json.dumps(data)
+        )
+
         arrContent = []
-        if resultData is not None and resultData['err_no'] == 0 and resultData['err_msg'] == 'success':
-            firstData = resultData['data']
+        if (
+            resultData is not None
+            and resultData["err_no"] == 0
+            and resultData["err_msg"] == "success"
+        ):
+            firstData = resultData["data"]
             for item in firstData:
-                itemID = item['article_id']
-                titleValue = item['article_info']['title']
-                brief_content = item['article_info']['brief_content']
-                cover_image = item['article_info']['cover_image']
-                ctime = item['article_info']['mtime']
-                
+                itemID = item["article_id"]
+                titleValue = item["article_info"]["title"]
+                brief_content = item["article_info"]["brief_content"]
+                cover_image = item["article_info"]["cover_image"]
+                ctime = item["article_info"]["mtime"]
+
                 if ctime == None:
-                    ctime = item['article_info']['ctime']
+                    ctime = item["article_info"]["ctime"]
                 createTime = self.transformTime(ctime)
-                
+
                 if createTime:
-                  arrContent.append(titleValue + '-----:' + 'https://juejin.cn/post/' + str(itemID))
-                    
-        
+                    arrContent.append(
+                        titleValue + "-----:" + "https://juejin.cn/post/" + str(itemID)
+                    )
+
         return arrContent
 
-    def transformTime(self,timeString):
-        py = pytz.timezone('Asia/Shanghai')
+    def transformTime(self, timeString):
+        py = pytz.timezone("Asia/Shanghai")
         old_time = datetime.fromtimestamp(float(timeString), py)
         now_time = datetime.now(py)
-        totleTime = (now_time - old_time)
+        totleTime = now_time - old_time
         # print("timeString:{}--old_time:{}--total_seconds:{}--timeMaxLine:{}".format(timeString,old_time,totleTime.total_seconds(),timeMaxLine))
-        
+
         if totleTime.total_seconds() <= timeMaxLine:
             return True
         else:
             return False
 
-      
+
 class result_model:
     def total_func():
         arrOne = []
         arrOne = fuliba().netWork()
-        arr_uuids = ['1574156384091320', '3483683111318823', '2946346894759319', '53218623894222','1139531179102392','1063982986187486','3298190611978526']
-        
+
+        # 暂停请求掘金
+        """ 
+        arr_uuids = [
+            "1574156384091320",
+            "3483683111318823",
+            "2946346894759319",
+            "53218623894222",
+            "1139531179102392",
+            "1063982986187486",
+            "3298190611978526",
+        ]
+
         arrSecond = []
         for item in arr_uuids:
             arrThird = juejin().loadData(item)
             arrSecond.extend(arrThird)
-            time.sleep(2)
-        title = '文章更新汇总'
-        
+            time.sleep(2) 
+        title = "文章更新汇总"
+
         if len(arrOne) == 0:
-            title = '掘金文章更新'
+            title = "掘金文章更新"
         if len(arrSecond) == 0:
-            title = '知乎文章更新'
-        arrLast = arrOne+arrSecond
-        content = '\n'.join(arrLast)
+            title = "知乎文章更新"
+        arrLast = arrOne + arrSecond
+        content = "\n".join(arrLast)
+        """
+        title = "知乎文章更新"
+        content = "\n".join(arrOne)
 
         if len(arrLast) != 0:
             TimeTracker().setTimes(filename=writeFile)
@@ -147,24 +180,23 @@ class result_model:
 
 
 def main_handler():
-  global timeMaxLine
-  timeMaxLine = TimeTracker().getTimes(filename=writeFile)
-  print(f"timeMaxLine====:{timeMaxLine}")
-  if not timeMaxLine:
-      timeMaxLine = 3600
-  result_model.total_func()
-    
-    
-if __name__ == '__main__':
+    global timeMaxLine
+    timeMaxLine = TimeTracker().getTimes(filename=writeFile)
+    print(f"timeMaxLine====:{timeMaxLine}")
+    if not timeMaxLine:
+        timeMaxLine = 3600
+    result_model.total_func()
+
+
+if __name__ == "__main__":
     main_handler()
 
-    
 
 """ 
 https://fuliba.net
 https://fuliba123.com
  """
 
-'''
+"""
 https://github.com/DreamSkywwl/github-actions-events/actions/workflows/hourly-python.yml
-'''
+"""
