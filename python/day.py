@@ -240,7 +240,7 @@ class dayNote:
         # print(f"从2024年5月16日到今天({today})")
         # print(f"相差 {total_days} 天")
         # print(f"一共 {years} 年 {months} 个月")
-        content = ""
+        content = " "
 
         notificationTool().main(titleMsg=f"尤一已经{years}岁，{months}个月，{days}天", message=content)
     
