@@ -215,7 +215,8 @@ class dayNote:
     
         # 计算月份和日期的差异
         birthdate_this_year = birthdate.replace(year=today.year)
-        if today < birthdate_this_year:
+        print(f"today====:{today}, birthdate_this_year====:{birthdate_this_year}")
+        if today.date() < birthdate_this_year:
             years, months, days = age - 1, 12 + birthdate.month - today.month, birthdate.day - today.day
         else:
             years, months, days = age, today.month - birthdate.month, today.day - birthdate.day
