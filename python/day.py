@@ -273,7 +273,7 @@ class dayNote:
                 first_day_prev_month = datetime.date(today.year - 1, 12, 1)
             else:
                 first_day_prev_month = datetime.date(today.year, today.month - 1, 1)
-            prev_month_days = (first_day_prev_month - datetime.timedelta(days=1)).day
+            prev_month_days = (first_day_prev_month - datetime.datetime.timedelta(days=1)).day
             days += prev_month_days
 
         # 处理月借位：月不够减时向年借1年
