@@ -1,11 +1,10 @@
-
 name: Python Script--半小时
 
 on:
   schedule:
-    - cron: '*/29 * * * *' 
-    # - cron: '*/10 * * * *'  
-    # - cron: '0 * * * *'  
+    # - cron: '*/29 * * * *'
+    # - cron: '*/10 * * * *'
+    # - cron: '0 * * * *'
     # 每小时执行一次
   workflow_dispatch: # Allow manual triggering of the workflow
 
@@ -15,11 +14,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Set Beijing Timezone
         uses: szenius/set-timezone@v1.2
@@ -27,19 +26,18 @@ jobs:
           timezoneLinux: "Asia/Shanghai"
           timezoneMacos: "Asia/Shanghai"
           timezoneWindows: "China Standard Time"
-      
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r ./python/requirements.txt
 
-      
       - name: ============>Run Python script
         env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              TARGET_REPO: ${{ secrets.TARGET_REPO }}
-              TARGET_TOKEN: ${{ secrets.TARGET_TOKEN }}
-              SHOWDOC_TOKEN: ${{ secrets.SHOWDOC_TOKEN }}
-              SHOWDOC_PIN: ${{ secrets.SHOWDOC_PIN }}
-              LETSERVER_TOKEN: ${{ secrets.LETSERVER_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_REPO: ${{ secrets.TARGET_REPO }}
+          TARGET_TOKEN: ${{ secrets.TARGET_TOKEN }}
+          SHOWDOC_TOKEN: ${{ secrets.SHOWDOC_TOKEN }}
+          SHOWDOC_PIN: ${{ secrets.SHOWDOC_PIN }}
+          LETSERVER_TOKEN: ${{ secrets.LETSERVER_TOKEN }}
         run: python ./python/randomJoke.py
