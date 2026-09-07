@@ -2,6 +2,8 @@
 # 一天计数一次
 from urllib.parse import quote, unquote
 import datetime
+
+
 import time
 
 import requests
@@ -240,26 +242,61 @@ class dayNote:
         # print(f"从2024年5月16日到今天({today})")
         # print(f"相差 {total_days} 天")
         # print(f"一共 {years} 年 {months} 个月")
-        content = " "
+        content = f"尤一已经{years}岁，{months}个月，{days}天\n{self.jobTime()}" 
 
         notificationTool().main(titleMsg=f"尤一已经{years}岁，{months}个月，{days}天", message=content)
     
         
         # return f"尤一已经{years}岁，{months}个月，{days}天"
+    def jobTime(self):
+        # 入职日期
+        entry_date = datetime.date(2022, 4, 6)
+        # 强制使用北京时间获取今日日期，避免系统时区差异导致误差
+        try:
+            from zoneinfo import ZoneInfo
+            today = datetime.datetime.now(ZoneInfo("Asia/Shanghai")).date()
+        except (ImportError, ModuleNotFoundError, Exception):
+            # Windows系统找不到时区时直接使用本地系统时间，Windows时区设置正确时结果一致
+            today = datetime.date.today()
+        # today = datetime.datetime.now(ZoneInfo("Asia/Shanghai")).date()
+
+        # 计算初始年月日差值
+        years = today.year - entry_date.year
+        months = today.month - entry_date.month
+        days = today.day - entry_date.day
+
+        # 处理日借位：日不够减时向月借1个月
+        if days < 0:
+            months -= 1
+            # 自动计算上个月总天数（自动兼容大小月、闰年2月）
+            if today.month == 1:
+                first_day_prev_month = datetime.date(today.year - 1, 12, 1)
+            else:
+                first_day_prev_month = datetime.date(today.year, today.month - 1, 1)
+            prev_month_days = (first_day_prev_month - datetime.timedelta(days=1)).day
+            days += prev_month_days
+
+        # 处理月借位：月不够减时向年借1年
+        if months < 0:
+            years -= 1
+            months += 12
+
+        # 打印结果
+        print("=" * 40)
+        print(f"入职日期：{entry_date.strftime('%Y-%m-%d')}")
+        print(f"计算日期：{today.strftime('%Y-%m-%d')}")
+        print("-" * 40)
+        print(f"累计入职：{years}年{months}个月{days}天")
+        print("=" * 40)
+
+        return f"累计入职：{years}年{months}个月{days}天"
+
+
+
 def handler():
-    """ 
-    d1 = datetime.datetime.now();
-    d2 = datetime.datetime(2021, 2, 17);
-    d3 = datetime.datetime(2024, 5, 16);
-    d4 = (d1 - d2).days + 1; # 在一起多久
-    d5 = (d1 - d3).days + 1; # 孩子已经多少天
-    msg = 'Tips: 认识晓粉已经' + str(d4) + '天'
-    msg2 = 'Tips: 孩子已经' + str(d5) + '天'
-    print(msg)
-    notificationTool().main(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2) 
-    """
+    # dayNote().jobTime()
     dayNote().main()
-    weChat_listening().requestURL()
+    # weChat_listening().requestURL()
   
 
 if __name__ == '__main__':
