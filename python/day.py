@@ -226,7 +226,7 @@ class dayNote:
         # 调整天数和月份为负数的情况
         if days < 0:
             months -= 1
-            birthdate_last_month = birthdate.replace(month=today.month, day=today.day, year=today.year) - datetime.datetime.timedelta(days=31)
+            birthdate_last_month = birthdate.replace(month=today.month, day=today.day, year=today.year) - datetime.timedelta(days=31)
             days += birthdate_last_month.day
         
         if months < 0:
@@ -273,7 +273,7 @@ class dayNote:
                 first_day_prev_month = datetime.date(today.year - 1, 12, 1)
             else:
                 first_day_prev_month = datetime.date(today.year, today.month - 1, 1)
-            prev_month_days = (first_day_prev_month - datetime.datetime.timedelta(days=1)).day
+            prev_month_days = (first_day_prev_month - datetime.timedelta(days=1)).day
             days += prev_month_days
 
         # 处理月借位：月不够减时向年借1年
