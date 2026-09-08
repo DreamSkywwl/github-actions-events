@@ -2,8 +2,8 @@ name: sharePan Python Script
 
 on:
   schedule:
-    # - cron: '32 9 * * *'
-    # 相差8个小时---计划每天下午五点半执行
+    - cron: '10 6 ? * 5'
+    # 相差8个小时---计划每周五下午三点十分执行一次
 
   workflow_dispatch: # Allow manual triggering of the workflow
 

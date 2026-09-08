@@ -4,6 +4,8 @@ on:
   schedule:
     # - cron: '32 10 * * *'
     # 相差8个小时---计划每天下午六点半执行
+    - cron: "10 7 ? * 5"
+    # 相差8个小时---计划每周五下午三点十分执行一次
 
   workflow_dispatch: # Allow manual triggering of the workflow
 
