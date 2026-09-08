@@ -183,6 +183,7 @@ class dayNote:
             from zoneinfo import ZoneInfo
             today = datetime.datetime.now(ZoneInfo("Asia/Shanghai")).date()
         except (ImportError, ModuleNotFoundError, Exception):
+            print("========未调用时区")
             # Windows系统找不到时区时直接使用本地系统时间，Windows时区设置正确时结果一致
             today = datetime.date.today()
         # today = datetime.datetime.now(ZoneInfo("Asia/Shanghai")).date()
@@ -221,9 +222,9 @@ class dayNote:
     def main(self):
         distanceTitle = self.calculateTimeDifference(2024,5,16)
         distanceContent = self.calculateTimeDifference(2022,4,6)
-        # print(f"distanceTitle====:{distanceTitle}, distanceContent====:{distanceContent}")
+        print(f"distanceTitle====:{distanceTitle}, distanceContent====:{distanceContent}")
         
-        notificationTool().main(titleMsg=f"尤一已经{distanceTitle}", message=f"入职已经{distanceContent}")
+        # notificationTool().main(titleMsg=f"尤一已经{distanceTitle}", message=f"入职已经{distanceContent}")
 
 
 
