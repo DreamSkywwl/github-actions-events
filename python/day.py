@@ -222,9 +222,11 @@ class dayNote:
     def main(self):
         distanceTitle = self.calculateTimeDifference(2024,5,16)
         distanceContent = self.calculateTimeDifference(2022,4,6)
-        print(f"distanceTitle====:{distanceTitle}, distanceContent====:{distanceContent}")
+        # print(f"distanceTitle====:{distanceTitle}, distanceContent====:{distanceContent}")
+
+
         
-        # notificationTool().main(titleMsg=f"尤一已经{distanceTitle}", message=f"入职已经{distanceContent}")
+        notificationTool().main(titleMsg=f"尤一已经{distanceTitle}", message=f"2024年5月16日截止到今天已经{distanceTitle}\n2022年4月6日入职已经{distanceContent}")
 
 
 
