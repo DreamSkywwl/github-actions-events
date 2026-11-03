@@ -9,14 +9,15 @@ on:
   schedule:
     - cron: "*/51 * * * *" # 每小时整点执行（UTC 时间）
   workflow_dispatch: # 支持在 GitHub Actions 页面手动点击运行
-
+permissions:
+  contents: write # ← 关键，缺这一行必然 403
 jobs:
   monitor:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Shanghai
-    permissions:
-      contents: write # 需要写仓库文件的权限
+    # permissions:
+    #   contents: write # 需要写仓库文件的权限
 
     steps:
       - name: Checkout 仓库代码
