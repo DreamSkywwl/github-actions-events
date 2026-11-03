@@ -1,0 +1,52 @@
+name: RSS Feed Monitor
+
+# 触发条件：
+# 1. 每小时整点自动执行（cron 为 UTC 时间，UTC 0分 = 北京时间 8点，这里每小时一次）
+# 2. 手动触发（方便测试）
+# 3. 推送到 main 分支时也触发一次（首次部署自动运行）
+on:
+  schedule:
+    - cron: "*/51 * * * *" # 每小时整点执行（UTC 时间）
+  workflow_dispatch: # 支持在 GitHub Actions 页面手动点击运行
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai
+    permissions:
+      contents: write # 需要写仓库文件的权限
+
+    steps:
+      - name: Checkout 仓库代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "rss-monitor/package-lock.json"
+
+      - name: 进入脚本目录并安装依赖
+        working-directory: rss-monitor
+        run: |
+          if [ ! -f package-lock.json ]; then
+            npm install
+          else
+            npm ci
+          fi
+      - name: 验证时区
+        run: date
+      - name: 运行 RSS 监控脚本
+        working-directory: rss-monitor
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_OWNER: DreamSkywwl
+          GITHUB_REPO: ${{ secrets.TARGET_REPO }}
+          GITHUB_BRANCH: main
+          FILE_PATH: fuliba.json
+          # SHOWDOC_PUSH_URL: ${{ secrets.SHOWDOC_PUSH_URL }}
+          SHOWDOC_TOKEN: ${{ secrets.SHOWDOC_TOKEN }}
+          SHOWDOC_PIN: ${{ secrets.SHOWDOC_PIN }}
+        run: node fuliba.js

@@ -1,0 +1,10 @@
+{
+    "name": "fuliba-rss-sync",
+    "version": "1.0.0",
+    "description": "抓取 fuliba RSS 并同步到 GitHub 仓库，失败时通过 ShowDoc 推送告警",
+    "main": "fuliba_rss_sync.js",
+    "dependencies": {
+      "@octokit/rest": "^21.0.0"
+    }
+  }
+  

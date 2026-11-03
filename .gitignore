@@ -3,3 +3,5 @@ test
 venv
 *.mp4
 FileNodeJs
+node_modules
+package-lock.json
