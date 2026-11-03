@@ -92,8 +92,8 @@ function fetchText(url, redirectCount = 0) {
  * 支持 GET 形式，title / content 作为 query 参数
  */
 async function pushShowDoc(title, content) {
-    showdocPin = os.environ.get("SHOWDOC_PIN")
-    showdocToken = os.environ.get("SHOWDOC_TOKEN")
+    showdocPin = process.env.SHOWDOC_PIN
+    showdocToken = process.env.SHOWDOC_TOKEN
     // letserverToken = os.environ.get("LETSERVER_TOKEN")
     if (!showdocPin) {
         console.log('[ShowDoc] 未配置 showdocPin，跳过推送');
