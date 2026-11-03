@@ -26,14 +26,14 @@ jobs:
         with:
           node-version: "20"
 
-      - name: 进入脚本目录并安装依赖
-        working-directory: rss-monitor
-        run: |
-          if [ ! -f package-lock.json ]; then
-            npm install
-          else
-            npm ci
-          fi
+      # - name: 进入脚本目录并安装依赖
+      #   working-directory: rss-monitor
+      #   run: |
+      #     if [ ! -f package-lock.json ]; then
+      #       npm install
+      #     else
+      #       npm ci
+      #     fi
       - name: 验证时区
         run: date
       - name: 运行 RSS 监控脚本
