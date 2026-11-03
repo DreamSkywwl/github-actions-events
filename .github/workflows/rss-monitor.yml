@@ -1,3 +1,4 @@
+# https://github.com/DreamSkywwl/github-actions-events/actions/workflows/rss-monitor.yml
 name: RSS Feed Monitor
 
 # 触发条件：
@@ -37,7 +38,6 @@ jobs:
       - name: 验证时区
         run: date
       - name: 运行 RSS 监控脚本
-        working-directory: rss-monitor
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_OWNER: DreamSkywwl
