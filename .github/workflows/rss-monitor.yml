@@ -44,7 +44,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_OWNER: DreamSkywwl
-          GITHUB_REPO: ${{ secrets.TARGET_REPO }}
+          GITHUB_REPO: actionMessage
           GITHUB_BRANCH: main
           FILE_PATH: fuliba.json
           # SHOWDOC_PUSH_URL: ${{ secrets.SHOWDOC_PUSH_URL }}
