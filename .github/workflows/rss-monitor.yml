@@ -25,8 +25,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-          cache-dependency-path: "rss-monitor/package-lock.json"
 
       - name: 进入脚本目录并安装依赖
         working-directory: rss-monitor
